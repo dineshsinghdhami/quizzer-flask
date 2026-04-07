@@ -1,0 +1,107 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to right, #f5e1e1, #e1f0ff);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Login Container */
+form {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    animation: fadeInUp 1s ease;
+}
+
+/* Title */
+h2 {
+    text-align: center;
+    color: #0056d2;
+    font-size: 26px;
+    margin-bottom: 25px;
+}
+
+/* Input Fields */
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px 16px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-color: #0056d2;
+    outline: none;
+}
+
+/* Submit Button */
+input[type="submit"] {
+    width: 100%;
+    background: linear-gradient(to right, #4285f4, #ea4335);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    opacity: 0.9;
+}
+
+/* Register Link */
+p {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+a {
+    color: #ff3c3c;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.flashes {
+    list-style-type: none;
+    padding: 0;
+}
+
+.flashes li {
+    color: red;
+    margin-top: 10px;
+}

@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Profile • Quizzer</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+* { 
+  box-sizing: border-box; 
+  margin:0; 
+  padding:0; 
+  font-family:'Montserrat',sans-serif; 
+}
+html, body { 
+  width:100%; 
+  margin:0; 
+  padding:0; 
+  min-height:100vh; 
+  background: linear-gradient(135deg,#00bcd4,#00796b); 
+  color:#333; 
+  transition: all 0.3s; 
+}
+body.dark { 
+  background: linear-gradient(135deg,#121212,#1e1e1e); 
+  color:#fff; 
+}
+
+.circle { 
+  position: fixed; 
+  border-radius: 50%; 
+  opacity: 0.1; 
+  animation: float 10s infinite ease-in-out alternate; 
+  z-index: -1; 
+  pointer-events: none; 
+}
+.circle1 { 
+  width: 200px; 
+  height: 200px; 
+  top: -50px; 
+  left: -50px; 
+  background: #fff; 
+}
+.circle2 { 
+  width: 300px; 
+  height: 300px; 
+  bottom: -100px; 
+  right: -80px; 
+  background: #000; 
+  animation-duration: 12s; 
+}
+@keyframes float { 
+  from { 
+    transform: translateY(0); 
+  } to { 
+    transform: translateY(30px); 
+  } 
+}
+
+.header {
+  display:flex; 
+  justify-content:space-between; 
+  align-items:center; 
+  padding:15px 30px;
+  backdrop-filter:blur(10px); 
+  background: rgba(255,255,255,0.15); 
+  border-radius:0 0 25px 25px;
+  box-shadow:0 10px 20px rgba(0,0,0,0.2); 
+  position:sticky; 
+  top:0; 
+  z-index:100;
+}
+.header-left { 
+  display:flex; 
+  align-items:center; 
+  gap:15px; 
+}
+.header-left img { 
+  width:55px; 
+  height:55px; 
+  border-radius:50%; 
+  border:2px solid #fff; 
+  object-fit:cover; 
+}
+.header-left .user-info { 
+  display:flex; 
+  flex-direction:column; 
+}
+.header-left .user-info .name { 
+  font-weight:700; 
+  font-size:16px; 
+  color:#fff; 
+}
+.header-left .user-info .email { 
+  font-size:13px; 
+  opacity:0.7; 
+  color:#fff; 
+}
+.header-right a {
+  background: linear-gradient(45deg,#00bcd4,#00796b); 
+  padding:8px 16px; 
+  border-radius:25px;
+  font-weight:600; 
+  color:#fff; 
+  text-decoration:none; 
+  transition:0.3s;
+}
+.header-right a:hover{ 
+  opacity:0.9; 
+  transform:translateY(-2px); 
+}
+
+main { 
+  max-width:1000px; 
+  margin:30px auto; 
+  padding:0 20px; 
+  display:flex; 
+  flex-direction:column; 
+  gap:30px; 
+  z-index:1; 
+  position:relative; 
+}
+.card{
+  background: rgba(255,255,255,0.15); 
+  backdrop-filter:blur(15px); 
+  border-radius:20px; 
+  padding:25px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.15),0 0 15px rgba(0,188,212,0.2); 
+  transition:0.3s;
+}
+.card:hover { 
+  transform:translateY(-5px); 
+}
+.card-title { 
+  font-weight:700; 
+  font-size:18px; 
+  margin-bottom:15px; 
+  color:#fff; 
+}
+
+.avatar-section { 
+  display:flex; 
+  flex-wrap:wrap; 
+  gap:20px; 
+  align-items:center; 
+}
+.avatar-section img {
+  width:110px; 
+  height:110px; 
+  border-radius:50%; 
+  border:4px solid #00bcd4; 
+  box-shadow:0 0 15px #00bcd4; 
+  object-fit:cover;
+  transition:0.3s;
+}
+.avatar-section img:hover { 
+  transform:scale(1.05); 
+  box-shadow:0 0 25px #00796b; 
+}
+.avatar-actions { 
+  display:flex; 
+  flex-direction:column; 
+  gap:12px; 
+  flex:1; 
+}
+.hint { 
+  font-size:13px; 
+  color:#fff; 
+}
+
+.hidden { 
+  display:none !important; 
+}
+
+input[type="text"], input[type="email"], input[type="password"] {
+  width:100%; 
+  padding:12px 14px; 
+  border-radius:20px; 
+  border:1px solid rgba(255,255,255,0.3);
+  font-size:14px; 
+  outline:none; 
+  background: rgba(255,255,255,0.15); 
+  color:#fff; 
+  backdrop-filter: blur(5px);
+}
+input:focus { 
+  border-color:#00bcd4; 
+  box-shadow:0 0 8px rgba(0,188,212,0.3); 
+}
+
+
+input[readonly] {
+  background: rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.7);
+  cursor: not-allowed;
+}
+
+.btn {
+  padding:10px 20px; 
+  border:none; 
+  border-radius:25px; 
+  font-weight:600; 
+  color:#fff;
+  background: linear-gradient(45deg,#00bcd4,#00796b); 
+  cursor:pointer; 
+  transition:0.3s;
+}
+.btn:hover { 
+  opacity:0.9; 
+  transform:translateY(-2px); 
+}
+.btn.secondary { 
+  background: rgba(255,255,255,0.15); 
+  border:1px solid #00bcd4; 
+  color:#fff; 
+}
+
+.grid { 
+  display:grid; 
+  grid-template-columns:1fr 1fr; 
+  gap:20px; 
+  align-items:flex-start; 
+}
+@media(max-width:700px){ 
+  .grid{grid-template-columns:1fr;} 
+}
+.stack { 
+  display:flex; 
+  flex-wrap:wrap; 
+  gap:10px; 
+  align-items:center; 
+}
+.divider { 
+  height:1px; 
+  background: rgba(255,255,255,0.2); 
+  margin:20px 0; 
+}
+
+
+.msg { 
+  padding:10px 14px; 
+  border-radius:10px; 
+  font-size:14px; 
+  margin-top:10px; 
+  display:none; 
+  position:relative; 
+  z-index:1; 
+}
+.msg.ok { 
+  background: rgba(0,255,128,0.2); 
+  color:#0f0; 
+}
+.msg.err { 
+  background: rgba(255,0,0,0.2); 
+  color:#f00; 
+}
+
+.accordion-item{
+  border-radius:20px; 
+  overflow:hidden; 
+  margin-bottom:10px; 
+  border:1px solid rgba(255,255,255,0.2);
+}
+.accordion-header{
+  padding:12px 16px; 
+  font-weight:600; 
+  cursor:pointer; 
+  display:flex; 
+  justify-content:space-between; 
+  align-items:center; 
+  color:#fff; 
+}
+.accordion-content{
+  padding:12px 16px; 
+  display:none; 
+  background: rgba(255,255,255,0.1); 
+  color:#fff; 
+}
+.accordion-item.open .accordion-content{display:block;
+}
+
+.pwd-toggle{
+  cursor:pointer; 
+  font-size:16px; 
+  opacity:0.7; 
+  color:#fff; 
+  position:absolute; 
+  right:10px; 
+  top:50%; 
+  transform:translateY(-50%); 
+}
+
+@media(max-width:768px){
+  .header{flex-direction:column; gap:10px;}
+  .grid{grid-template-columns:1fr;}
+}
+
+
+body.dark { 
+    background: linear-gradient(135deg,#121212,#1e1e1e); 
+    color: #fff; 
+}
+.footer {
+  text-align: center;
+  padding: 20px 0;
+  font-size: 14px;
+  color: rgba(255,255,255,0.7);
+  margin-top: 30px;
+  background: linear-gradient(135deg,#00bcd4,#00796b);
+  backdrop-filter: blur(10px);
+  border-radius: 20px 20px 0 0;
+}
+
+body.dark .footer {
+  background: linear-gradient(135deg,#121212,#1e1e1e);
+  color: rgba(255,255,255,0.6);
+}
+
+</style>
+</head>
+<body>
+
+<div class="circle circle1"></div>
+<div class="circle circle2"></div>
+
+
+<div class="header">
+  <div class="header-left">
+    <img id="headerAvatar" src="{{ profile_pic_url or url_for('static', filename='img/default_avatar.png') }}" alt="Avatar">
+    <div class="user-info">
+      <div class="name">{{ user.username }}</div>
+      <div class="email">{{ user.email }}</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <a href="{{ url_for('student_dashboard') }}">← Back to Dashboard</a>
+  </div>
+</div>
+
+<main>
+ 
+  <div class="card">
+    <div class="card-title">Profile</div>
+    <div class="avatar-section">
+      <img id="previewAvatar" src="{{ profile_pic_url or url_for('static', filename='img/default_avatar.png') }}" alt="Profile photo">
+      <div class="avatar-actions">
+        <input id="photoInput" type="file" accept="image/*" class="hidden">
+        <div class="stack">
+          <button class="btn secondary" id="changePhotoBtn">Upload Photo</button>
+          <button class="btn" id="savePhotoBtn" disabled>Save</button>
+        </div>
+        <div class="hint">PNG/JPG max 3MB</div>
+        <div id="photoMsg" class="msg"></div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <form id="profileForm" class="grid">
+      <div>
+        <label>Username</label>
+        <input id="usernameInput" type="text" name="username" value="{{ user.username }}" required>
+      </div>
+      <div>
+        <label>Email</label>
+        <input type="email" name="email" value="{{ user.email }}" readonly>
+      </div>
+      <div style="grid-column:1/-1;" class="stack">
+        <button type="submit" class="btn">Save Profile</button>
+        <div id="profileMsg" class="msg"></div>
+      </div>
+    </form>
+  </div>
+
+  
+  <div class="card">
+    <div class="card-title">Security</div>
+    <div class="stack" style="justify-content:space-between;">
+      <div>
+        <div style="font-weight:600; color:#fff;">Password</div>
+        <div class="hint">Use a strong password</div>
+      </div>
+      <button class="btn" id="editPwdBtn">Edit</button>
+    </div>
+    <div class="divider"></div>
+
+    <form id="pwdForm" class="grid hidden" autocomplete="off">
+      <input type="hidden" name="action" value="change_password">
+      <div>
+        <label>New Password</label>
+        <div style="position:relative;">
+          <input id="newPassword" type="password" name="password" placeholder="Enter new password" required>
+          <span id="toggleNewPwd" class="pwd-toggle">👁️</span>
+        </div>
+        <div id="passwordRules" class="hint" style="font-size:12px; color:#ffeb3b;">
+          Must be 8+ chars, include 1 number & 1 special character
+        </div>
+      </div>
+      <div>
+        <label>Confirm Password</label>
+        <div style="position:relative;">
+          <input id="confirmPassword" type="password" name="confirm_password" placeholder="Re-enter new password" required>
+          <span id="toggleConfirmPwd" class="pwd-toggle">👁️</span>
+        </div>
+      </div>
+      <div></div>
+      <div class="stack">
+        <button type="submit" class="btn">Change</button>
+        <button type="button" class="btn secondary" id="cancelPwdBtn">Cancel</button>
+      </div>
+      <div id="pwdMsg" class="msg" style="grid-column:1/-1;"></div>
+    </form>
+  </div>
+
+
+  <div class="card">
+    <div class="card-title">Help / FAQ</div>
+    <div class="accordion">
+      <div class="accordion-item">
+        <div class="accordion-header">Support <i class="fas fa-chevron-down"></i></div>
+        <div class="accordion-content">Contact <b>quizzer1pro@gmail.com</b> for support.</div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header">FAQs <i class="fas fa-chevron-down"></i></div>
+        <div class="accordion-content">
+          <p><b>Change password?</b> Click Edit in Security, enter new password, click Change.</p>
+          <p><b>Change email/username?</b> Use Save Profile button above.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header">About <i class="fas fa-chevron-down"></i></div>
+        <div class="accordion-content">Quizzer helps students prepare with semester-based quizzes. © {{ current_year }} Quizzer.</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <p>© {{ current_year }} Quizzer. All rights reserved.</p>
+</footer>
+
+
+<script>
+if(localStorage.getItem('theme') === 'dark'){
+    document.body.classList.add('dark');
+} else {
+    document.body.classList.remove('dark');
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+
+const changePhotoBtn = document.getElementById('changePhotoBtn');
+const savePhotoBtn = document.getElementById('savePhotoBtn');
+const photoInput = document.getElementById('photoInput');
+const previewAvatar = document.getElementById('previewAvatar');
+const headerAvatar = document.getElementById('headerAvatar');
+const photoMsg = document.getElementById('photoMsg');
+let selectedFile = null;
+
+changePhotoBtn.addEventListener('click', () => photoInput.click());
+
+photoInput.addEventListener('change', () => {
+  const file = photoInput.files[0];
+  if (!file) return;
+
+  // Validate image type & size
+  if (!file.type.startsWith('image/')) {
+    showPhotoMsg('Please select a valid image file (JPG/PNG).', false);
+    return;
+  }
+  if (file.size > 3 * 1024 * 1024) {
+    showPhotoMsg('File too large (max 3MB).', false);
+    return;
+  }
+
+  selectedFile = file;
+  const reader = new FileReader();
+  reader.onload = e => {
+    previewAvatar.src = e.target.result;
+    savePhotoBtn.disabled = false;
+  };
+  reader.readAsDataURL(file);
+  showPhotoMsg('Preview ready. Click Save to upload.', true);
+});
+
+savePhotoBtn.addEventListener('click', async () => {
+  if (!selectedFile) {
+    showPhotoMsg('Please select a file first.', false);
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('profile_pic', selectedFile);
+  formData.append('action', 'update_pic');
+
+  savePhotoBtn.disabled = true;
+  showPhotoMsg('Uploading...', true);
+
+  try {
+    const res = await fetch('{{ url_for("userprofile") }}', {
+      method: 'POST',
+      body: formData
+    });
+
+    const data = await res.json();
+    if (data.ok) {
+    
+      const newUrl = data.filename ? `/static/uploads/${data.filename}?t=${Date.now()}` : previewAvatar.src;
+      previewAvatar.src = newUrl;
+      headerAvatar.src = newUrl;
+
+      showPhotoMsg('✅ Photo uploaded successfully!', true);
+    } else {
+      showPhotoMsg(data.error || '❌ Upload failed. Try again.', false);
+    }
+  } catch (err) {
+    showPhotoMsg('⚠️ Network error. Please retry.', false);
+  } finally {
+    savePhotoBtn.disabled = false;
+    selectedFile = null;
+    photoInput.value = '';
+  }
+});
+
+
+function showPhotoMsg(message, ok = true) {
+  photoMsg.textContent = message;
+  photoMsg.className = ok ? 'msg ok' : 'msg err';
+  photoMsg.style.display = 'block';
+}
+
+
+  profileForm.addEventListener('submit', async(e)=>{
+    e.preventDefault();
+    const formData = new FormData(profileForm); formData.append('action','update_profile');
+    try{
+      const res = await fetch('{{ url_for("userprofile") }}',{method:'POST',body:formData});
+      const data = await res.json();
+      if(data.ok){ 
+          profileMsg.textContent='Username updated successfully!'; 
+          profileMsg.className='msg ok'; 
+          profileMsg.style.display='block'; 
+      } else {
+          if(data.error && data.error.toLowerCase().includes('taken')){
+              profileMsg.textContent = '⚠️ Username already exists. Please choose another.';
+          } else if(data.error){
+              profileMsg.textContent = data.error;
+          } else {
+              profileMsg.textContent = 'An unexpected error occurred. Please try again.';
+          }
+          profileMsg.className='msg err'; 
+          profileMsg.style.display='block';
+      }
+    }catch(e){ profileMsg.textContent='Network error'; profileMsg.className='msg err'; profileMsg.style.display='block'; }
+  });
+
+  
+  const editPwdBtn = document.getElementById('editPwdBtn');
+  const pwdForm = document.getElementById('pwdForm');
+  const cancelPwdBtn = document.getElementById('cancelPwdBtn');
+  const pwdMsg = document.getElementById('pwdMsg');
+  const toggleNewPwd = document.getElementById('toggleNewPwd');
+  const toggleConfirmPwd = document.getElementById('toggleConfirmPwd');
+  const newPassword = document.getElementById('newPassword');
+  const confirmPassword = document.getElementById('confirmPassword');
+
+  editPwdBtn.addEventListener('click', ()=> pwdForm.classList.remove('hidden'));
+  cancelPwdBtn.addEventListener('click', ()=> pwdForm.classList.add('hidden'));
+  toggleNewPwd.addEventListener('click', ()=> newPassword.type=newPassword.type==='password'?'text':'password');
+  toggleConfirmPwd.addEventListener('click', ()=> confirmPassword.type=newPassword.type==='password'?'text':'password');
+
+  function validatePassword(pwd){
+    return /.{8,}/.test(pwd) && /\d/.test(pwd) && /[!@#$%^&*(),.?":{}|<>]/.test(pwd);
+  }
+
+  pwdForm.addEventListener('submit', async(e)=>{
+    e.preventDefault();
+    const pwdVal = newPassword.value; const confirmVal = confirmPassword.value;
+    if(pwdVal!==confirmVal){ pwdMsg.textContent='Passwords do not match'; pwdMsg.className='msg err'; pwdMsg.style.display='block'; return; }
+    if(!validatePassword(pwdVal)){ pwdMsg.textContent='Password does not meet strength requirements'; pwdMsg.className='msg err'; pwdMsg.style.display='block'; return; }
+
+    const formData = new FormData(pwdForm);
+    try{
+      const res = await fetch('{{ url_for("userprofile") }}',{method:'POST',body:formData});
+      const data = await res.json();
+      if(data.ok){ pwdMsg.textContent='Password changed successfully!'; pwdMsg.className='msg ok'; pwdMsg.style.display='block'; pwdForm.reset(); pwdForm.classList.add('hidden'); }
+      else{ pwdMsg.textContent=data.error||'Update failed'; pwdMsg.className='msg err'; pwdMsg.style.display='block'; }
+    }catch(e){ pwdMsg.textContent='Network error'; pwdMsg.className='msg err'; pwdMsg.style.display='block'; }
+  });
+
+  document.querySelectorAll('.accordion-header').forEach(header=>{
+    header.addEventListener('click', ()=> header.parentElement.classList.toggle('open'));
+  });
+});
+</script>
+</body>
+</html>

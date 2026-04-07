@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Semester Levels</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <script src="https://kit.fontawesome.com/a2e0e6ad0f.js" crossorigin="anonymous"></script>
+
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+  </script>
+
+  <style>
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      font-family: 'Montserrat', sans-serif; 
+    }
+    html, body { 
+      width: 100%; 
+      height: 100%; 
+      overflow-x: hidden; 
+    }
+
+    body {
+      display: flex;
+      height: 100vh;
+      background: var(--bg-color);
+      color: var(--text-color);
+      position: relative;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+
+    .circle { 
+      position: absolute; 
+      border-radius: 50%; 
+      opacity: 0.15; 
+      animation: float 12s infinite ease-in-out alternate; 
+    }
+    .circle1 { 
+      width: 250px; 
+      height: 250px; 
+      top: -50px; 
+      left: -50px; 
+      background: #fff; 
+    }
+    .circle2 { 
+      width: 300px; 
+      height: 300px; 
+      bottom: -100px; 
+      right: -80px; 
+      background: #000; 
+      animation-duration: 15s; 
+    }
+    @keyframes float { 
+      from { 
+        transform: translateY(0); 
+      } to { 
+        transform: translateY(30px); 
+      } 
+    }
+
+    .sidebar {
+      width: 220px;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 4px 0 12px rgba(0,0,0,0.15);
+      z-index: 1;
+    }
+    .sidebar h2 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      text-align: center;
+      font-weight: 700;
+    }
+    .semester, .go-back-btn {
+      cursor: pointer;
+      padding: 12px 15px;
+      margin-bottom: 10px;
+      border-radius: 15px;
+      font-weight: 600;
+      font-size: 17px;
+      background: rgba(255,255,255,0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+      text-align: center;
+      user-select: none;
+    }
+    .semester:hover, .go-back-btn:hover {
+      background-color: rgba(255,255,255,0.3);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      transform: translateX(5px);
+    }
+    .semester.active {
+      background-color: #fff;
+      color: #00796b;
+      font-weight: 700;
+      box-shadow: 0 0 15px 3px #00796b;
+      transform: scale(1.05);
+    }
+    .go-back-btn {
+      background-color: #d62828;
+      font-weight: 700;
+      margin-top: auto;
+      box-shadow: 0 4px 12px rgba(214,40,40,0.8);
+    }
+    .go-back-btn:hover {
+      background-color: #a71d1d;
+      transform: translateX(5px) scale(1.05);
+      box-shadow: 0 6px 20px rgba(167,29,29,0.9);
+    }
+
+    .content {
+      flex: 1;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      z-index: 1;
+      overflow-y: auto;
+    }
+    #selectedSemesterTitle {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text-color);
+      margin-bottom: 30px;
+      user-select: none;
+      opacity: 0;
+      animation: fadeInMoveDown 0.5s forwards;
+    }
+    .levels {
+      display: flex;
+      gap: 25px;
+      opacity: 0;
+      animation: fadeInMoveUp 0.5s forwards;
+    }
+    .level-btn {
+      background: linear-gradient(135deg, #00bcd4, #00796b);
+      border: none;
+      color: white;
+      padding: 18px 45px;
+      font-size: 18px;
+      font-weight: 600;
+      border-radius: 15px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      transition: background 0.4s, transform 0.3s, box-shadow 0.3s;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+    .level-btn:hover {
+      background: linear-gradient(135deg, #00796b, #00bcd4);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      transform: scale(1.1);
+    }
+    .hidden { display: none !important; }
+
+    @keyframes fadeInMoveDown { 
+      from { 
+        opacity: 0; 
+        transform: translateY(-20px); 
+      } to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      } 
+    }
+    @keyframes fadeInMoveUp { 
+      from { 
+        opacity: 0; 
+        transform: translateY(20px); 
+      } to 
+      { 
+        opacity: 1; 
+        transform: translateY(0); 
+      } 
+    }
+
+    @media (max-width: 700px) {
+      body {
+        flex-direction: row;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .sidebar {
+        width: 40%;
+        padding: 15px;
+        height: 100%;
+        overflow-y: auto;
+      }
+
+      .semester {
+        margin: 8px 0;
+        width: 100%;
+        transform: none !important;
+      }
+
+      .content {
+        width: 60%;
+        height: 100%;
+        padding: 15px 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        overflow-y: auto;
+      }
+
+      #levelsContainer {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .level-btn {
+        width: 100%;
+        padding: 12px 20px;
+        font-size: 14px;
+        border-radius: 12px;
+        text-align: center;
+      }
+
+      .go-back-btn {
+        display: none;
+      }
+
+      .circle1, .circle2 { max-width: 150vw; max-height: 150vh; }
+    }
+
+    :root {
+      --bg-color: linear-gradient(135deg, #00bcd4, #00796b);
+      --text-color: #ffffff;
+      --card-bg: rgba(255,255,255,0.1);
+    }
+
+    [data-theme="dark"] {
+      --bg-color: linear-gradient(135deg, #121212, #1e1e1e);
+      --text-color: #f1f1f1;
+      --card-bg: rgba(255,255,255,0.05);
+    }
+
+    .dark-toggle {
+      cursor: pointer;
+      font-size: 1.2rem;
+      border: none;
+      background: none;
+      color: var(--text-color);
+    }
+  </style>
+</head>
+<body>
+  <div class="circle circle1"></div>
+  <div class="circle circle2"></div>
+
+  <div class="sidebar">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <h2>Semesters</h2>
+      <button class="dark-toggle" id="themeToggle" title="Toggle Dark Mode">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+    </div>
+
+    <div id="semesterList"></div>
+    <div id="goBackBtn" class="go-back-btn">← Go Back</div>
+  </div>
+
+   <div class="content">
+    <h2 id="selectedSemesterTitle">Select a semester</h2>
+    <div id="levelsContainer" class="levels hidden">
+      <button class="level-btn" data-level="Easy">Easy</button>
+      <button class="level-btn" data-level="Medium">Medium</button>
+      <button class="level-btn" data-level="Hard">Hard</button>
+    </div>
+  </div>
+
+  <script>
+    const semesterListDiv = document.getElementById("semesterList");
+    const levelsContainer = document.getElementById("levelsContainer");
+    const selectedSemesterTitle = document.getElementById("selectedSemesterTitle");
+    const goBackBtn = document.getElementById("goBackBtn");
+    let selectedSemester = null;
+
+    for(let i=1; i<=8; i++){
+      const semDiv = document.createElement("div");
+      semDiv.textContent = "Semester " + i;
+      semDiv.className = "semester";
+      semDiv.addEventListener("click", () => selectSemester(semDiv.textContent, semDiv));
+      semesterListDiv.appendChild(semDiv);
+    }
+
+    function selectSemester(name, clickedElement){
+      selectedSemester = name;
+      selectedSemesterTitle.textContent = name;
+      levelsContainer.classList.remove("hidden");
+
+      selectedSemesterTitle.style.animation = "none";
+      levelsContainer.style.animation = "none";
+      void selectedSemesterTitle.offsetWidth;
+      void levelsContainer.offsetWidth;
+      selectedSemesterTitle.style.animation = "fadeInMoveDown 0.5s forwards";
+      levelsContainer.style.animation = "fadeInMoveUp 0.5s forwards";
+
+      document.querySelectorAll(".semester").forEach(el => el.classList.remove("active"));
+      clickedElement.classList.add("active");
+    }
+
+    levelsContainer.addEventListener("click", (e)=>{
+      if(e.target.classList.contains("level-btn") && selectedSemester){
+        const level = e.target.getAttribute("data-level");
+        const semesterNumber = selectedSemester.split(" ")[1];
+        const url = `/quiz?faculty=science_tech&course=BE Civil&semester=${encodeURIComponent(semesterNumber)}&level=${encodeURIComponent(level.toLowerCase())}`;
+        window.location.href = url;
+      }
+    });
+
+    goBackBtn.addEventListener("click", ()=>{
+      window.location.href = "{{ url_for('student_dashboard') }}";
+    });
+
+    const themeToggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+
+    function setTheme(mode) {
+      html.setAttribute('data-theme', mode);
+      localStorage.setItem('theme', mode);
+      themeToggle.innerHTML = mode === 'dark'
+        ? '<i class="fa-solid fa-sun"></i>'
+        : '<i class="fa-solid fa-moon"></i>';
+    }
+
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    setTheme(currentTheme);
+
+    themeToggle.addEventListener('click', () => {
+      const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      setTheme(newTheme);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verify OTP</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #0f0f0f, #1c1c1c);
+    position: relative;
+    padding: 20px 0;
+    min-height: 100vh;
+    color: #f1f1f1;
+}
+
+
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.05;
+    animation: float 10s infinite ease-in-out alternate;
+    pointer-events: none;
+}
+.circle1 { 
+    width: 150px; 
+    height: 150px; 
+    top: -40px; 
+    left: -40px; 
+    background: #fff; 
+}
+.circle2 { 
+    width: 220px; 
+    height: 220px; 
+    bottom: -70px; 
+    right: -60px; 
+    background: #000; 
+    animation-duration: 12s; 
+}
+.container {
+    background: #1e1e1e;
+    padding: 25px 30px;
+    border-radius: 20px;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.5);
+    text-align: center;
+    width: 320px;
+    max-width: 90%;
+    animation: fadeInScale 0.6s ease;
+}
+.container h2 {
+    color: #00bcd4;
+    margin-bottom: 15px;
+    font-size: 1.6rem;
+}
+input {
+    width: 100%;
+    padding: 12px 15px;
+    margin: 8px 0;
+    border-radius: 25px;
+    border: 2px solid #333;
+    font-size: 1rem;
+    background: #2a2a2a;
+    color: #f1f1f1;
+    transition: 0.3s;
+}
+input:focus {
+    border-color: #00bcd4;
+    box-shadow: 0 0 6px rgba(0,188,212,0.3);
+}
+input.error-field {
+    border-color: red;
+    box-shadow: 0 0 5px red;
+}
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #fff;
+    background: linear-gradient(45deg, #00bcd4, #00796b);
+    transition: transform 0.1s, opacity 0.3s;
+}
+button:hover { 
+    opacity: 0.9; 
+    transform: translateY(-2px); 
+}
+button:active { 
+    transform: scale(0.97); 
+}
+button:disabled { 
+    background: #555; 
+    cursor: not-allowed; 
+}
+button.go-back { 
+    background: #f44336; 
+}
+.flash {
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    text-align: center;
+}
+.flash.show { 
+    opacity: 1; 
+}
+.flash-success { 
+    background: #388e3c; 
+    color: #fff; 
+}
+.flash-danger { 
+    background: #d32f2f; 
+    color: #fff; 
+}
+.flash-info { 
+    background: #0288d1; 
+    color: #fff; 
+}
+.change-email {
+    margin-top: 10px;
+    display: block;
+    font-size: 0.9rem;
+    color: #00bcd4;
+    cursor: pointer;
+    text-decoration: underline;
+}
+.change-email:hover { 
+    color: #4dd0e1; 
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+}
+.modal-content {
+    background: #1f1f1f;
+    padding: 20px 25px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 360px;
+    text-align: center;
+    animation: fadeInScale 0.5s ease;
+    position: relative;
+    color: #f1f1f1;
+}
+.modal-content h3 { margin-bottom: 12px; color: #00bcd4; }
+.modal-content input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #444;
+    margin-bottom: 12px;
+    background: #2a2a2a;
+    color: #f1f1f1;
+}
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    color: #aaa;
+}
+.modal-close:hover { 
+    color: #fff; 
+}
+@keyframes float {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-15px); }
+}
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+@media(max-width: 400px){
+    .container { padding: 20px; width: 90%; }
+    input, button { font-size: 0.95rem; padding: 12px; }
+}
+@media(max-width: 350px){
+    .container { padding: 18px; width: 85%; }
+    input, button { font-size: 0.9rem; padding: 10px; }
+}
+</style>
+</head>
+<body>
+<div class="circle circle1"></div>
+<div class="circle circle2"></div>
+
+<div class="container">
+    <h2>Enter OTP</h2>
+    <div id="flash-container"></div>
+    <form id="otpForm" action="{{ url_for('verify_otp') }}" method="POST">
+        <input type="text" name="otp" placeholder="Enter OTP" id="otpInput" autocomplete="one-time-code" inputmode="numeric">
+        <button type="submit" id="verifyBtn">Verify OTP</button>
+    </form>
+    <button type="button" id="goBackBtn" class="go-back">Go Back</button>
+    <button id="resendOtpBtn" type="button">Resend OTP</button>
+    <span class="change-email" id="changeEmailBtn">Change Email</span>
+</div>
+
+
+<div class="modal" id="changeEmailModal">
+    <div class="modal-content">
+        <span class="modal-close" id="modalClose">&times;</span>
+        <h3>Change Email</h3>
+        <input type="email" id="newEmail" placeholder="Enter new email">
+        <button id="updateEmailBtn">Update Email</button>
+    </div>
+</div>
+
+<script>
+document.getElementById('otpInput').focus();
+
+function showFlash(message, category='info', duration=2000) {
+    const flashDiv = document.createElement('div');
+    flashDiv.classList.add('flash', `flash-${category}`);
+    flashDiv.textContent = message;
+    document.getElementById('flash-container').prepend(flashDiv);
+    setTimeout(() => flashDiv.classList.add('show'), 10);
+    setTimeout(() => { flashDiv.classList.remove('show'); setTimeout(() => flashDiv.remove(), 500); }, duration);
+}
+
+document.getElementById('otpForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const otp = document.getElementById('otpInput').value;
+    fetch('{{ url_for("verify_otp") }}', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ otp })
+    })
+    .then(res => res.json())
+    .then(data => {
+        showFlash(data.msg, data.ok ? 'success' : 'danger');
+        if(data.ok){ setTimeout(()=> window.location.href = "/login", 1500); }
+    })
+    .catch(() => showFlash("OTP verification failed!", 'danger'));
+});
+
+document.getElementById('resendOtpBtn').addEventListener('click', function(){
+    const btn = this;
+    btn.disabled = true; btn.textContent = 'Sending...';
+    fetch('{{ url_for("resend_otp") }}', { method: 'POST', credentials: 'same-origin' })
+    .then(res => res.json())
+    .then(data => {
+        showFlash(data.msg || 'OTP sent!', data.ok ? 'success' : 'danger');
+        btn.disabled = false; btn.textContent = 'Resend OTP';
+        document.getElementById('otpInput').focus();
+    })
+    .catch(() => {
+        showFlash('Failed to resend OTP.', 'danger');
+        btn.disabled = false; btn.textContent = 'Resend OTP';
+    });
+});
+
+const modal = document.getElementById('changeEmailModal');
+document.getElementById('changeEmailBtn').addEventListener('click', () => modal.style.display = 'flex');
+document.getElementById('modalClose').addEventListener('click', () => modal.style.display = 'none');
+window.addEventListener('click', e => { if(e.target === modal) modal.style.display = 'none'; });
+
+document.getElementById('updateEmailBtn').addEventListener('click', function(){
+    const btn = this;
+    btn.disabled = true; btn.textContent = 'Updating...';
+    const newEmail = document.getElementById('newEmail').value.trim();
+    if(!newEmail){
+        showFlash('Please enter a valid email.', 'danger');
+        btn.disabled = false; btn.textContent = 'Update Email';
+        return;
+    }
+    fetch('{{ url_for("change_otp_email") }}', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({email: newEmail})
+    })
+    .then(res => res.json())
+    .then(data => {
+        showFlash(data.msg || 'Email updated!', data.ok ? 'success' : 'danger');
+        modal.style.display = 'none';
+        btn.disabled = false; btn.textContent = 'Update Email';
+    })
+    .catch(() => {
+        showFlash('Failed to update email.', 'danger');
+        btn.disabled = false; btn.textContent = 'Update Email';
+    });
+});
+document.getElementById('goBackBtn').addEventListener('click', () => window.history.back());
+</script>
+</body>
+</html>

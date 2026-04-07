@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Add Question | Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <style>
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      font-family: 'Montserrat', sans-serif; 
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #00bcd4, #00796b);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      position: relative;
+      color: #333;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.15;
+      animation: float 12s infinite ease-in-out alternate;
+      z-index: 0;
+    }
+    .circle1 { 
+      width: 250px; 
+      height: 250px; 
+      top: -50px; 
+      left: -50px; 
+      background: #fff; 
+    }
+    .circle2 { 
+      width: 350px; 
+      height: 350px; 
+      bottom: -80px; 
+      right: -100px; 
+      background: #000; 
+      animation-duration: 15s; 
+    }
+    @keyframes float { 
+      from { t
+        ransform: translateY(0); 
+      } to { 
+        transform: translateY(30px); 
+      } 
+    }
+
+    main {
+      background: rgba(255,255,255,0.95);
+      border-radius: 20px;
+      padding: 30px;
+      width: 100%;
+      max-width: 800px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      z-index: 1;
+      position: relative;
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    @keyframes fadeIn { 
+      from { 
+        opacity: 0; 
+        transform: translateY(-20px); 
+      } to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      } 
+    }
+
+    h1 { 
+      text-align: center; 
+      font-size: 28px; 
+      color: #d62828; 
+      margin-bottom: 20px; 
+    }
+
+    label { 
+      display: block; 
+      font-weight: 600; 
+      margin-bottom: 6px; 
+    }
+    input, select, textarea { 
+      width: 100%; 
+      padding: 10px; 
+      border-radius: 8px; 
+      border: 1px solid #ccc; 
+      margin-bottom: 15px; 
+    }
+    textarea { 
+      resize: none; 
+    }
+
+    fieldset { 
+      border: 1px solid #ccc; 
+      padding: 15px; 
+      border-radius: 10px; 
+      margin-bottom: 15px; 
+    }
+    legend { 
+      font-weight: 600; 
+    }
+
+    .flex { 
+      display: flex; 
+    }
+    .items-center { 
+      align-items: center; 
+    }
+    .gap-2 { 
+      gap: 8px; 
+    }
+    .gap-4 { 
+      gap: 16px; 
+    }
+    .justify-between { 
+      justify-content: space-between; 
+    }
+    .pt-4 { 
+      padding-top: 16px; 
+    }
+
+    .btn {
+      padding: 12px 20px;
+      border-radius: 25px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(45deg, #00bcd4, #00796b);
+      color: white;
+    }
+    .btn-primary:hover { 
+      opacity: 0.9; 
+      transform: translateY(-2px); 
+    }
+
+    .btn-danger {
+      background: #d62828;
+      color: white;
+    }
+    .btn-danger:hover { background: #b71c1c; }
+
+    .btn-gray { 
+      background: #aaa; 
+      color: #fff; 
+    }
+    .btn-gray:hover { 
+      background: #888; 
+    }
+
+    @media(max-width:768px) {
+      main { 
+        padding: 20px; 
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Floating circles -->
+  <div class="circle circle1"></div>
+  <div class="circle circle2"></div>
+
+  <main>
+    <h1>Add New Question</h1>
+
+    <form id="questionForm" method="POST" action="/add_question">
+      <div>
+        <label for="faculty">Select Faculty</label>
+        <select id="faculty" name="faculty" required>
+          <option value="" disabled selected>-- Select Faculty --</option>
+          <option value="science_tech">Science and Technology</option>
+          <option value="management">Management</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="course">Select Course</label>
+        <select id="course" name="course" required>
+          <option value="" disabled selected>-- Select Course --</option>
+        </select>
+      </div>
+      
+      <div>
+        <label for="semester">Select Semester</label>
+        <select id="semester" name="semester" required>
+          <option value="" disabled selected>-- Select Semester --</option>
+          <script>
+            for(let i=1;i<=8;i++) { document.write(`<option value="${i}">Semester ${i}</option>`); }
+          </script>
+        </select>
+      </div>
+
+      <div>
+        <label for="quizLevel">Quiz Level</label>
+        <select id="quizLevel" name="quizLevel" required>
+          <option value="" disabled selected>-- Choose Level --</option>
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="questionText">Question</label>
+        <textarea id="questionText" name="questionText" rows="3" placeholder="Enter the question here..." required></textarea>
+      </div>
+
+      <fieldset>
+        <legend>Answer Choices</legend>
+        <div class="space-y-2">
+          <div class="flex items-center gap-2">
+            <input type="radio" name="correctAnswer" value="choice1" required />
+            <input type="text" name="choice1" placeholder="Choice 1" required />
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="radio" name="correctAnswer" value="choice2" />
+            <input type="text" name="choice2" placeholder="Choice 2" required />
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="radio" name="correctAnswer" value="choice3" />
+            <input type="text" name="choice3" placeholder="Choice 3" required />
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="radio" name="correctAnswer" value="choice4" />
+            <input type="text" name="choice4" placeholder="Choice 4" required />
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="flex justify-between pt-4">
+        <button type="button" onclick="window.location.href='admin'" class="btn btn-gray">Go Back</button>
+        <div class="flex gap-4">
+          <button type="reset" class="btn btn-gray">Reset</button>
+          <button type="submit" class="btn btn-danger">Add Question</button>
+        </div>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    const facultySelect = document.getElementById('faculty');
+    const courseSelect = document.getElementById('course');
+
+    const courses = {
+      science_tech: ['BE Computer', 'BE Civil', 'BCA'],
+      management: ['BBA']
+    };
+
+    facultySelect.addEventListener('change', function () {
+      const selectedFaculty = this.value;
+      const courseOptions = courses[selectedFaculty] || [];
+
+      courseSelect.innerHTML = '<option disabled selected>-- Select Course --</option>';
+      courseOptions.forEach(course => {
+        const option = document.createElement('option');
+        option.value = course;
+        option.textContent = course;
+        courseSelect.appendChild(option);
+      });
+    });
+  </script>
+
+</body>
+</html>

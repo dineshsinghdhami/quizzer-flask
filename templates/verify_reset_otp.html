@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Verify OTP</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: linear-gradient(135deg, #0e0e0e, #1b1b1b);
+  color: #f1f1f1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  min-height: 100vh;
+  padding: 20px 0;
+}
+
+@media (max-width: 768px) {
+  html, body {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.05;
+  animation: float 10s infinite ease-in-out alternate;
+  pointer-events: none;
+}
+.circle1 {
+  width: 200px;
+  height: 200px;
+  top: -50px;
+  left: -50px;
+  background: #ffffff;
+}
+.circle2 {
+  width: 280px;
+  height: 280px;
+  bottom: -90px;
+  right: -70px;
+  background: #000000;
+  animation-duration: 12s;
+}
+
+.container {
+  width: 380px;
+  max-width: 95%;
+  background: #1e1e1e;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 25px;
+  position: relative;
+  z-index: 1;
+}
+
+h2 {
+  text-align: center;
+  color: #00bcd4;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  letter-spacing: 0.5px;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 25px;
+  border: 2px solid #333;
+  background: #2a2a2a;
+  color: #f1f1f1;
+  outline: none;
+  transition: 0.3s;
+  font-size: 1rem;
+  margin-bottom: 12px;
+}
+input[type="text"]:focus {
+  border-color: #00bcd4;
+  box-shadow: 0 0 6px rgba(0, 188, 212, 0.3);
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 25px;
+  background: linear-gradient(45deg, #00bcd4, #00796b);
+  color: #fff;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition: 0.3s;
+}
+button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.back-btn {
+  background: #f44336;
+}
+
+.flash {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  z-index: 9999;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  min-width: 220px;
+  animation: fadeInOut 3s ease forwards;
+}
+.flash-success { 
+  background: #388e3c; 
+}
+.flash-danger { 
+  background: #d32f2f; 
+}
+.flash-warning { 
+  background: #ff9800; 
+}
+
+@keyframes fadeInOut {
+  0% { 
+    opacity: 0; 
+    transform: translate(-50%, -10px); 
+  }
+  10%, 80% { 
+    opacity: 1; 
+    transform: translate(-50%, 0); 
+  }
+  100% { 
+    opacity: 0; 
+    transform: translate(-50%, -10px); 
+  }
+}
+
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-15px); }
+}
+
+
+@media (max-width: 500px) {
+  .container { 
+    width: 80%; 
+    padding: 20px; 
+  }
+  h2 { 
+    font-size: 1.6rem; 
+  }
+  input[type="text"], button, .back-btn { 
+    font-size: 0.95rem; 
+    padding: 10px 12px; 
+  }
+}
+@media (max-width: 380px) {
+  .container { 
+    width: 90%; 
+    padding: 15px; 
+  }
+  h2 { 
+    font-size: 1.4rem; 
+  }
+  input[type="text"], button, .back-btn { 
+    font-size: 0.9rem; 
+    padding: 8px 10px; 
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="circle circle1"></div>
+<div class="circle circle2"></div>
+
+<div class="container" id="mainContainer">
+  <h2>Verify OTP</h2>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+      <div class="flash flash-{{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endwith %}
+
+  <form method="POST" id="otpForm">
+    <input type="text" name="otp" placeholder="Enter OTP" required inputmode="numeric" pattern="[0-9]*">
+    <button type="submit">Verify OTP</button>
+  </form>
+
+  <button class="back-btn" id="backBtn">Back</button>
+</div>
+
+<script>
+document.getElementById('backBtn').addEventListener('click', () => {
+  window.location.href = "{{ url_for('forgot_password') }}";
+});
+
+setTimeout(() => {
+  document.querySelectorAll('.flash').forEach(msg => {
+    msg.style.opacity = 0;
+    setTimeout(() => msg.remove(), 500);
+  });
+}, 2000);
+</script>
+</body>
+</html>

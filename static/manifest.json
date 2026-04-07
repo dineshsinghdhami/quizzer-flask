@@ -1,0 +1,17 @@
+{
+  "name": "Quizzer",
+  "short_name": "Quizzer",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0d1117",
+  "theme_color": "#00bcd4",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/static/favicon.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png"
+    }
+  ]
+}

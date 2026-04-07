@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random Quiz | Quizzer</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg-login: linear-gradient(135deg, #121212, #1e1e1e);
+    --container-bg: #1e1e1e;
+    --input-bg: #2a2a2a;
+    --text-color: #f1f1f1;
+    --placeholder-color: #bbb;
+    --overlay-bg: linear-gradient(135deg, #00796b, #004d40);
+    --overlay-text: #fff;
+    --button-bg: linear-gradient(45deg, #00796b, #004d40);
+}
+
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+    font-family: 'Montserrat', sans-serif; 
+}
+body { 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+    background: var(--bg-login); 
+    color: var(--text-color); 
+    position: relative; 
+    overflow: hidden; 
+}
+
+.circle { 
+    position: absolute; 
+    border-radius: 50%; 
+    opacity: 0.15; 
+    animation: float 10s infinite ease-in-out alternate; 
+}
+.circle1 { 
+    width: 200px; 
+    height: 200px; 
+    top: -50px; 
+    left: -50px; 
+    background: #fff; 
+}
+.circle2 { 
+    width: 300px; 
+    height: 300px; 
+    bottom: -100px; 
+    right: -80px; 
+    background: #000; 
+    animation-duration: 12s; 
+}
+
+.quiz-container {
+    background-color: var(--container-bg);
+    padding: 20px 40px;
+    border-radius: 15px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    width: 400px;
+    text-align: center;
+    z-index: 1;
+    position: relative;
+}
+
+h1 { 
+    color: #00bcd4; 
+    margin-bottom: 20px; 
+}
+
+#options {
+    list-style-type: none;
+    padding: 0;
+}
+
+#options li {
+    background-color: #2a2a2a;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#options li:hover {
+    background-color: #00796b;
+    color: white;
+}
+
+#nextBtn {
+    margin-top: 20px;
+    padding: 12px;
+    border: none;
+    border-radius: 25px;
+    background: var(--button-bg);
+    color: #fff;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#nextBtn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+#result {
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+@keyframes float { 
+    0%, 100% { 
+        transform: translateY(0px); 
+    } 50% { 
+        transform: translateY(-20px); 
+    } 
+}
+
+@media(max-width: 768px) 
+{
+    .quiz-container { 
+        width: 90%; 
+        padding: 20px; 
+        border-radius: 10px; 
+    }
+    .circle1, .circle2 { 
+        width: 120px; 
+        height: 120px; 
+        opacity: 0.08; 
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="circle circle1"></div>
+<div class="circle circle2"></div>
+
+<div class="quiz-container">
+    <h1>Random Quiz</h1>
+    <div id="quiz">
+        <div id="question"></div>
+        <ul id="options"></ul>
+    </div>
+    <button id="nextBtn">Next</button>
+    <div id="result"></div>
+</div>
+<script>
+const quizData = {{ questions|tojson }};
+
+let currentQuestion = 0;
+let score = 0;
+
+const questionEl = document.getElementById('question');
+const optionsEl = document.getElementById('options');
+const nextBtn = document.getElementById('nextBtn');
+const resultEl = document.getElementById('result');
+
+function loadQuestion() {
+    if (currentQuestion >= quizData.length) {
+        questionEl.textContent = "Quiz Completed!";
+        optionsEl.innerHTML = '';
+        nextBtn.style.display = 'none';
+        resultEl.textContent = `Your Score: ${score} / ${quizData.length}`;
+        return;
+    }
+
+    const currentQuiz = quizData[currentQuestion];
+    questionEl.textContent = currentQuiz.question;
+    optionsEl.innerHTML = '';
+
+    nextBtn.disabled = true;
+
+    currentQuiz.options.forEach((option, index) => {
+        const li = document.createElement('li');
+        li.textContent = option;
+
+        li.addEventListener('click', () => {
+             Array.from(optionsEl.children).forEach(opt => opt.style.pointerEvents = 'none');
+
+            nextBtn.disabled = false;
+
+            if (index === currentQuiz.correct_index) {
+                score++;
+                li.style.backgroundColor = 'green';
+                li.style.color = 'white';
+            } else {
+                li.style.backgroundColor = 'red';
+                li.style.color = 'white';
+                // Highlight correct answer
+                optionsEl.children[currentQuiz.correct_index].style.backgroundColor = 'green';
+                optionsEl.children[currentQuiz.correct_index].style.color = 'white';
+            }
+        });
+
+        optionsEl.appendChild(li);
+    });
+}
+
+nextBtn.addEventListener('click', () => {
+    currentQuestion++;
+    loadQuestion();
+});
+
+loadQuestion();
+</script>
+</body>
+</html>
