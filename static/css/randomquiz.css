@@ -1,0 +1,130 @@
+:root {
+    --bg-login: linear-gradient(135deg, #121212, #1e1e1e);
+    --container-bg: #1e1e1e;
+    --input-bg: #2a2a2a;
+    --text-color: #f1f1f1;
+    --placeholder-color: #bbb;
+    --overlay-bg: linear-gradient(135deg, #00796b, #004d40);
+    --overlay-text: #fff;
+    --button-bg: linear-gradient(45deg, #00796b, #004d40);
+}
+
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+    font-family: 'Montserrat', sans-serif; 
+}
+body { 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+    background: var(--bg-login); 
+    color: var(--text-color); 
+    position: relative; 
+    overflow: hidden; 
+}
+
+.circle { 
+    position: absolute; 
+    border-radius: 50%; 
+    opacity: 0.15; 
+    animation: float 10s infinite ease-in-out alternate; 
+}
+.circle1 { 
+    width: 200px; 
+    height: 200px; 
+    top: -50px; 
+    left: -50px; 
+    background: #fff; 
+}
+.circle2 { 
+    width: 300px; 
+    height: 300px; 
+    bottom: -100px; 
+    right: -80px; 
+    background: #000; 
+    animation-duration: 12s; 
+}
+
+.quiz-container {
+    background-color: var(--container-bg);
+    padding: 20px 40px;
+    border-radius: 15px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    width: 400px;
+    text-align: center;
+    z-index: 1;
+    position: relative;
+}
+
+h1 { 
+    color: #00bcd4; 
+    margin-bottom: 20px; 
+}
+
+#options {
+    list-style-type: none;
+    padding: 0;
+}
+
+#options li {
+    background-color: #2a2a2a;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#options li:hover {
+    background-color: #00796b;
+    color: white;
+}
+
+#nextBtn {
+    margin-top: 20px;
+    padding: 12px;
+    border: none;
+    border-radius: 25px;
+    background: var(--button-bg);
+    color: #fff;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#nextBtn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+#result {
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+@keyframes float { 
+    0%, 100% { 
+        transform: translateY(0px); 
+    } 50% { 
+        transform: translateY(-20px); 
+    } 
+}
+
+@media(max-width: 768px) 
+{
+    .quiz-container { 
+        width: 90%; 
+        padding: 20px; 
+        border-radius: 10px; 
+    }
+    .circle1, .circle2 { 
+        width: 120px; 
+        height: 120px; 
+        opacity: 0.08; 
+    }
+}
