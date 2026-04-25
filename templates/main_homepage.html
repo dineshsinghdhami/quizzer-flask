@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quizzer - Interactive Quiz Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+<style>
+
+* {
+      box-sizing: border-box;
+      margin: 0; 
+      padding: 0;
+     }
+body {
+     font-family: 'Montserrat', sans-serif; 
+     overflow-x: hidden; 
+     background: linear-gradient(135deg, #121212, #1e1e1e);
+      color: #f1f1f1; 
+      transition: background 0.3s, color 0.3s; 
+    }
+
+
+header {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    padding: 20px 10%; 
+    background: #1e1e1ecc; 
+    position: sticky;
+    top: 0; 
+    z-index: 1000; 
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5); 
+    backdrop-filter: blur(10px); 
+}
+
+.logo { 
+    font-size: 1.8rem; 
+    font-weight: bold; 
+    color: #00bcd4; 
+    text-decoration: none; 
+}
+
+nav { 
+    display: flex; 
+    align-items: center; 
+    gap: 20px; 
+}
+
+nav a {
+    text-decoration: none; 
+    color: #f1f1f1; 
+    font-weight: 500; 
+    transition: color 0.3s; 
+}
+
+nav a:hover { 
+    color: #00bcd4; 
+}
+
+nav .btn-signin {
+    padding: 8px 20px; 
+    border-radius: 30px; 
+    background: #00bcd4; 
+    color: #fff; 
+    border: none; 
+    font-weight: 500; 
+    transition: background 0.3s, transform 0.3s; 
+}
+
+nav .btn-signin:hover {
+    background: #00796b; 
+    transform: translateY(-2px); 
+}
+
+.hamburger { /*mobile menu*/
+    display: none; 
+    font-size: 1.5rem; 
+    cursor: pointer; 
+}
+
+.hero {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 80px 10%; 
+    flex-wrap: wrap; 
+    min-height: 80vh; 
+    position: relative; 
+    overflow: hidden; 
+}
+
+.hero::before {
+    content: '';
+    position: absolute; 
+    top: -50px; 
+    right: -50px; 
+    width: 200px; 
+    height: 200px; 
+    background: rgba(0,188,212,0.2); 
+    border-radius: 50%; 
+    z-index: 0; 
+    animation: float 25s ease-in-out infinite; 
+}
+
+.hero::after {
+    content: '';
+    position: absolute; 
+    bottom: -60px; 
+    left: -60px; 
+    width: 250px;
+    height: 250px; 
+    background: rgba(0,121,107,0.15); 
+    border-radius: 50%; 
+    z-index: 0; animation: float 29s ease-in-out infinite alternate; 
+}
+
+.hero-text {
+    max-width: 600px;
+    text-align: left; 
+    z-index: 1; 
+}
+
+.hero-text h1 {
+    font-size: 3rem;
+    color: #00bcd4; 
+    margin-bottom: 20px; 
+    line-height: 1.2; 
+    animation: fadeInUp 1s ease forwards; 
+}
+
+.hero-text p {
+    font-size: 1.2rem;
+    margin-bottom: 15px; 
+    line-height: 1.6; 
+    animation: fadeInUp 1.2s ease forwards; 
+    color: #f1f1f1; 
+}
+
+.hero-text strong { 
+    font-weight: 700; 
+    color: #00bcd4; 
+    display: block;
+     margin-bottom: 20px; 
+}
+
+.hero-text .btn {
+    padding: 12px 30px;
+    font-size: 1rem; 
+    background: #00bcd4; 
+    color: #fff; 
+    border: none; 
+    border-radius: 30px; 
+    cursor: pointer; 
+    transition: background 0.3s, transform 0.3s; 
+    margin-right: 15px;
+}
+
+.hero-text .btn:hover { 
+    background: #00796b;
+    transform: translateY(-3px); 
+}
+
+.hero-text .btn-secondary {
+    background: #2a2a2a;
+    color: #00bcd4; 
+    border: 2px solid #00bcd4; 
+}
+
+.hero-text .btn-secondary:hover {
+    background: #00bcd4; 
+    color: #fff; 
+}
+
+.hero-image {
+    flex: 1 1 50%;
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
+}
+
+.hero-image img {
+    width: 100%; 
+    max-width: 600px; 
+    height: auto; 
+    animation: float 4s ease-in-out infinite; 
+}
+
+@keyframes float {
+    0%,100% {
+        transform: translateY(0px);
+    }
+    50% { 
+        transform: translateY(-20px); 
+    } 
+}
+
+@keyframes fadeInUp {
+     0% {
+         opacity: 0;
+        transform: translateY(20px);
+     }
+      100% { opacity: 1; 
+             transform: translateY(0); 
+            } 
+        
+}
+
+.features { 
+    display: flex; 
+    justify-content: space-around; 
+    flex-wrap: wrap; 
+    padding: 60px 10%; 
+}
+
+.feature { 
+    background: #2a2a2a; 
+    padding: 40px 30px; 
+    border-radius: 25px; 
+    text-align: center; 
+    box-shadow: 0 6px 20px rgba(0,0,0,0.5); 
+    transition: transform 0.3s, box-shadow 0.3s; 
+    cursor: pointer; 
+    margin: 20px; 
+    flex: 1 1 250px; 
+    position: relative; 
+    overflow: hidden; 
+}
+
+.feature:hover {
+    transform: translateY(-10px); 
+    box-shadow: 0 15px 30px rgba(0,0,0,0.7); 
+}
+
+.feature i {
+    font-size: 2.5rem; 
+    color: #fff; 
+    margin-bottom: 15px; 
+    background: #00bcd4; 
+    padding: 20px; 
+    border-radius: 50%; 
+    transition: transform 0.3s; 
+}
+
+.feature:hover i { 
+    transform: scale(1.2); 
+}
+
+.feature h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px; 
+    color: #f1f1f1; 
+}
+
+.feature p {
+    font-size: 0.95rem; 
+    line-height: 1.5; 
+    color: #ccc; 
+}
+
+.faq-container { 
+    display: flex; 
+    justify-content: space-between; 
+    gap: 40px; 
+    padding: 60px 10%; 
+    flex-wrap: wrap; 
+}
+
+.faq {
+    flex: 1; 
+    background: #1e1e1e; 
+    border-radius: 20px; 
+    padding: 30px; 
+    box-shadow: 0 5px 20px rgba(0,0,0,0.5); 
+}
+
+.faq h2 {
+    font-size: 2rem; 
+    color: #00bcd4;
+    margin-bottom: 30px; 
+}
+
+.faq-item {
+    margin-bottom: 15px; 
+}
+
+.faq-item h3 {
+    font-size: 1.2rem; 
+    cursor: pointer; 
+    background: #2a2a2a; 
+    color: #f1f1f1; 
+    padding: 12px 15px; 
+    border-radius: 10px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    transition: background 0.3s; 
+}
+
+.faq-item h3::after {
+    content: '\f078'; 
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900; 
+    transition: transform 0.3s; 
+}
+
+.faq-item.active h3::after {
+    transform: rotate(-180deg); 
+}
+
+.faq-item h3:hover {
+    background: #00bcd4; 
+    color: #fff; 
+}
+
+.faq-item p { 
+    max-height: 0; 
+    overflow: hidden; 
+    padding: 0 15px; 
+    line-height: 1.5; 
+    transition: max-height 0.4s ease, padding 0.3s ease; 
+    color: #ccc; 
+}
+
+.faq-item.active p {
+    max-height: 500px; 
+    padding: 10px 15px; 
+}
+
+.tips { 
+    flex: 1; 
+    background: #1b3b36; 
+    border-radius: 20px; 
+    padding: 30px; 
+    box-shadow: 0 5px 20px rgba(0,0,0,0.5); 
+}
+
+.tips h2 {
+    font-size: 2rem; 
+    color: #00bcd4; 
+    margin-bottom: 20px; 
+}
+
+.tips p { 
+    font-size: 1rem; 
+    line-height: 1.6; 
+    margin-bottom: 15px; 
+    color: #ccc; 
+}
+
+footer { 
+    background: #1e1e1e; 
+    color: #ccc;
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    flex-wrap: wrap; 
+    padding: 20px 10%; 
+    gap: 15px; 
+}
+
+footer .footer-left, footer .footer-center { 
+    color: #ccc; /* match text color */
+    font-size: 0.95rem;
+}
+
+footer .footer-center a { 
+    color: #ccc; 
+    text-decoration: none; 
+    transition: color 0.3s; 
+}
+
+footer .footer-center a:hover { 
+    color: #00bcd4; 
+}
+
+footer .social-icons { 
+    display: flex; 
+    gap: 15px; 
+    margin-top: 10px; 
+}
+
+footer .social-icons a { 
+    color: #ccc; 
+    font-size: 1.3rem; 
+    transition: transform 0.3s, color 0.3s; 
+}
+
+footer .social-icons a:hover { 
+    color: #00bcd4; 
+    transform: scale(1.2); 
+}
+
+@media (max-width: 900px) {
+    .hero { 
+        flex-direction: column; 
+        text-align: left; 
+        min-height: auto; 
+    }
+
+    .hero-text { 
+        margin-bottom: 40px; 
+    }
+    
+    .hero-text h1 { 
+        font-size: 2rem; 
+    }
+
+    .hero-text p { 
+        font-size: 1rem; 
+    }
+
+    .hero-image img { 
+        max-width: 90%; 
+    }
+
+    .hero-text .btn { 
+        display: block; 
+        margin-bottom: 15px; 
+    }
+
+    nav {
+        display: none; 
+        flex-direction: column; 
+        background: #1e1e1ecc; 
+        position: absolute; 
+        top: 70px; 
+        right: 10%; 
+        border-radius: 10px; 
+        padding: 10px; 
+        box-shadow: 0 4px 10px rgba(0,0,0,0.5); 
+    }
+
+    nav.active { 
+        display: flex; 
+    }
+
+    .hamburger { 
+        display: block; 
+        color: #00bcd4; 
+    }
+
+    .faq-container { 
+        flex-direction: column; 
+        gap: 30px; 
+    }
+    
+    footer { 
+        flex-direction: column; 
+        align-items: center; 
+        text-align: center; 
+    }
+
+    footer .social-icons {
+        margin-top: 15px; 
+    }    
+}
+</style>
+
+<header>
+    <a href="#" class="logo"><i class="fas fa-brain"></i> Quizzer</a>
+    <i class="fas fa-bars hamburger" id="hamburger"></i>
+    <nav id="nav-menu">
+        <a href="#features">Features</a>
+        <a href="#faq">FAQ</a>
+        <a href="login" class="btn-signin">Sign In</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <div class="hero-text">
+        <h1>Test Your Skills, Track Your Progress</h1>
+        <p>Join Quizzer, the interactive platform where learning meets fun!</p>
+        <p><strong>"Learn. Compete. Conquer."</strong></p>
+        <button class="btn" onclick="location.href='login'">Get Started</button>
+        <button class="btn btn-secondary" onclick="location.href='#features'">Explore Quizzes</button>
+    </div>
+    <div class="hero-image">
+        <img src="{{ url_for('static', filename='image/sdd.png') }}" alt="Quiz Illustration">
+    </div>
+</section>
+
+<section class="features" id="features">
+    <div class="feature">
+        <i class="fas fa-trophy"></i>
+        <h3>Track Progress</h3>
+        <p>Complete quizzes and track your progress to improve over time.</p>
+    </div>
+    <div class="feature">
+        <i class="fas fa-users"></i>
+        <h3>Learn Together</h3>
+        <p>Share quiz results with classmates to encourage peer learning.</p>
+    </div>
+    <div class="feature">
+        <i class="fas fa-brain"></i>
+        <h3>Exam Preparation</h3>
+        <p>Practice quizzes based on subjects and semesters to prepare for exams.</p>
+    </div>
+</section>
+
+<section class="faq-container" id="faq">
+    <div class="faq">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+            <h3>How do I create an account?</h3>
+            <p>Click on the "Sign In" button at the top, register with your details, and start practicing quizzes instantly.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Is Quizzer free to use?</h3>
+            <p>Yes! All quizzes and features are completely free for students and learners.</p>
+        </div>
+        <div class="faq-item">
+            <h3>What kind of quizzes are available?</h3>
+            <p>We provide quizzes based on semester levels, subjects, and chapters to help with exam preparation.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Can I track my progress?</h3>
+            <p>Yes, Quizzer keeps track of your scores and progress so you can see improvement over time.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Do I need internet to use Quizzer?</h3>
+            <p>Yes, Quizzer is an online platform, so an internet connection is required.</p>
+        </div>
+    </div>
+
+    <div class="tips">
+        <h2>Tips & Tricks</h2>
+        <p>💡 Use Quizzer before tests as a quick revision tool.</p>
+        <p>💡 Practice quizzes daily to strengthen your memory.</p>
+        <p>💡 Focus on weaker subjects by attempting chapter-wise quizzes.</p>
+        <p>💡 Review your wrong answers to avoid repeating mistakes in exams.</p>
+        
+    </div>
+</section>
+
+<footer>
+    <div class="footer-left">&copy; 2025 Quizzer. All Rights Reserved ❤️</div>
+    <div class="footer-center">📧 <a href="mailto:quizzer1pro@gmail.com">contact@quizzer.com</a></div>
+    <div class="social-icons">
+        <a href="https://github.com/dineshsinghdhami/" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/dineshsinghdhami1/" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="https://x.com/dineshdhami001" target="_blank"><i class="fab fa-twitter"></i></a>
+        <a href="https://www.youtube.com/@dineshsinghdhami1" target="_blank"><i class="fab fa-youtube"></i></a>
+    </div>
+</footer>
+
+<script>
+const hamburger = document.getElementById('hamburger');
+const navMenu = document.getElementById('nav-menu');
+hamburger.addEventListener('click', () => {
+    navMenu.classList.toggle('active');
+});
+
+const faqItems = document.querySelectorAll('.faq-item h3');
+faqItems.forEach(item => {
+    item.addEventListener('click', () => {
+        faqItems.forEach(i => { if(i !== item) i.parentElement.classList.remove('active'); });
+        item.parentElement.classList.toggle('active');
+    });
+});
+
+ if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('{{ url_for("static", filename="sw.js") }}')
+    .then(reg => console.log('✅ Service Worker registered:', reg))
+    .catch(err => console.log('❌ Service Worker registration failed:', err));
+}
+
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    if (window.innerWidth > 768) return;
+    
+    e.preventDefault();
+    deferredPrompt = e;
+
+    const installBanner = document.createElement('div');
+    installBanner.id = 'installBanner';
+    installBanner.style.cssText = `
+        position: fixed;
+        top: -70px;
+        left: 0;
+        width: 100%;
+        background: #00bcd4;
+        color: #fff;
+        padding: 15px 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: bold;
+        z-index: 9999;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        transition: top 0.5s ease;
+    `;
+    installBanner.innerHTML = `
+        <span>Install Quizzer App on your device</span>
+        <div>
+            <button id="installBtn" style="margin-right:10px;
+            padding:5px 12px;
+            border:none;
+            border-radius:5px;
+            background:#00796b;
+            color:#fff;
+            cursor:pointer;">Install</button>
+            <button id="closeInstall" style="padding:5px 10px;
+            border:none;
+            border-radius:5px;
+            background:#555;
+            color:#fff;
+            cursor:pointer;">X</button>
+        </div>
+    `;
+    document.body.appendChild(installBanner);
+
+    setTimeout(() => { installBanner.style.top = '0'; }, 100);
+
+    const installBtn = document.getElementById('installBtn');
+    const closeBtn = document.getElementById('closeInstall');
+
+    installBtn.addEventListener('click', async () => {
+        installBanner.style.top = '-70px';
+        deferredPrompt.prompt();
+        const choiceResult = await deferredPrompt.userChoice;
+        console.log('User choice:', choiceResult.outcome);
+        deferredPrompt = null;
+    });
+
+    closeBtn.addEventListener('click', () => {
+        installBanner.style.top = '-70px';
+    });
+});
+</script>
+</body>
+</html>
