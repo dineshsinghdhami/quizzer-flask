@@ -12,7 +12,7 @@ NEPAL_OFFSET = timedelta(hours=5, minutes=45)
 
 
 app = Flask(__name__)
-app.secret_key = '9866109958'
+app.secret_key = '98989898'
 
 # Set session lifetime
 app.permanent_session_lifetime = timedelta(days=30)
