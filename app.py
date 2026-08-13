@@ -52,7 +52,7 @@ def allowed_file(filename):
 
 
 EMAIL_SENDER = "quizzer1pro@gmail.com"
-EMAIL_PASSWORD = "qkdk onns awhj fnuz"  
+EMAIL_PASSWORD = ""  
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 465
 
