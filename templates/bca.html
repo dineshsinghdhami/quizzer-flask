@@ -4,10 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Semester Levels</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
   <script src="https://kit.fontawesome.com/a2e0e6ad0f.js" crossorigin="anonymous"></script>
-   <link rel="stylesheet" href="/static/css/bca.css">
+  <link rel="stylesheet" href="/static/css/theme.css">
+  <link rel="stylesheet" href="/static/css/bca.css">
   <script>
     (function() {
       const savedTheme = localStorage.getItem('theme') || 'light';
@@ -17,27 +18,29 @@
 
 </head>
 <body>
-  <div class="circle circle1"></div>
-  <div class="circle circle2"></div>
+  <div class="bg-pattern"></div>
 
   <div class="sidebar">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-      <h2>Semesters</h2>
+    <div class="sidebar-top">
+      <span class="qz-logo sidebar-logo"><i class="fas fa-shapes"></i> Quizzer</span>
       <button class="dark-toggle" id="themeToggle" title="Toggle Dark Mode">
         <i class="fa-solid fa-moon"></i>
       </button>
     </div>
+    <p class="sidebar-caption">Science &amp; Technology · BCA</p>
+    <h2>Semesters</h2>
 
     <div id="semesterList"></div>
-    <div id="goBackBtn" class="go-back-btn">← Go Back</div>
+    <div id="goBackBtn" class="go-back-btn"><i class="fas fa-arrow-left"></i> Go Back</div>
   </div>
 
    <div class="content">
+    <span class="content-eyebrow">Pick a difficulty</span>
     <h2 id="selectedSemesterTitle">Select a semester</h2>
     <div id="levelsContainer" class="levels hidden">
-      <button class="level-btn" data-level="Easy">Easy</button>
-      <button class="level-btn" data-level="Medium">Medium</button>
-      <button class="level-btn" data-level="Hard">Hard</button>
+      <button class="level-btn" data-level="Easy"><i class="fas fa-seedling"></i> Easy</button>
+      <button class="level-btn" data-level="Medium"><i class="fas fa-bolt"></i> Medium</button>
+      <button class="level-btn" data-level="Hard"><i class="fas fa-fire"></i> Hard</button>
     </div>
   </div>
 

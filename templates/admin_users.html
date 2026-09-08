@@ -4,8 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Panel • Quizzer</title>
-<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="/static/css/admin_users.css">
 
 
@@ -24,43 +25,150 @@
 
 
 
-<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
 
 <div class="sidebar" id="sidebar">
   <div>
-    <h2>Admin Panel</h2>
-    <button class="nav-button active" onclick="showSection('dashboardSection', this)">🏠 Dashboard</button>
-    <button class="nav-button" onclick="showSection('usersSection', this)">👥 Users</button>
-    <button class="nav-button" onclick="showSection('quizzesSection', this)">📝 Add Quizzes</button>
-    <button class="nav-button" onclick="showSection('questionsSection', this)">📚 All Questions</button>
-    <button class="nav-button" onclick="showSection('reportsSection', this)">📊 Reports</button>
+    <span class="admin-brand"><i class="fas fa-shapes"></i> Quizzer <span class="admin-tag">Admin</span></span>
+  
+    <button class="nav-button active" onclick="showSection('dashboardSection', this)"><i class="fas fa-house"></i> Dashboard</button>
+    <button class="nav-button" onclick="showSection('usersSection', this)"><i class="fas fa-users"></i> Users</button>
+    <button class="nav-button" onclick="showSection('quizzesSection', this)"><i class="fas fa-circle-plus"></i> Add Quizzes</button>
+    <button class="nav-button" onclick="showSection('questionsSection', this)"><i class="fas fa-book"></i> All Questions</button>
+    <button class="nav-button" onclick="showSection('reportsSection', this)"><i class="fas fa-chart-column"></i> Reports</button>
   </div>
-  <button class="logout-btn" onclick="confirmLogout()">🚪 Logout</button>
+  <button class="logout-btn" onclick="confirmLogout()"><i class="fas fa-right-from-bracket"></i> Logout</button>
 </div>
 
 <div class="main-content">
   
   <div id="dashboardSection" class="section active">
-    <h2>Welcome to Quizzer Admin Panel 🎉</h2>
-    <p>Manage users, quizzes, and analyze reports efficiently.</p>
-    <h3 style="margin-top:30px;">Developed By:</h3>
-    <div class="dev-container">
-      <div class="dev-card">
-        <img src="{{ url_for('static', filename='image/Gemini_Generated_Image_n8xkzon8xkzon8xk.png') }}" alt="Dinesh Singh Dhami">
-        <h4>Dinesh Singh Dhami</h4>
-        <p>Team Lead & Backend Developer</p>
+    <div class="dashboard-header">
+      <div>
+        <span class="eyebrow">ADMIN OVERVIEW</span>
+        <h2>Welcome back, Admin</h2>
+        <p>Here is a quick overview of your Quizzer platform.</p>
       </div>
-      <div class="dev-card">
-        <img src="{{ url_for('static', filename='image/samir.jpg') }}" alt="Samir Bist">
-        <h4>Samir Bist</h4>
-        <p>Frontend Developer</p>
-      </div>
-      <div class="dev-card">
-        <img src="{{ url_for('static', filename='image/dipak.jpg') }}" alt="Dipak Shyada">
-        <h4>Dipak Shyada</h4>
-        <p>UI/UX Designer</p>
+      <div class="dashboard-date">
+        <i class="fas fa-calendar-day"></i>
+        <span id="currentDate">Today</span>
       </div>
     </div>
+
+    <div class="stats-grid">
+      <article class="stat-card">
+        <div class="stat-icon users-icon"><i class="fas fa-users"></i></div>
+        <div>
+          <span class="stat-label">Total Users</span>
+          <strong>{{ users|length }}</strong>
+          <small>Registered accounts</small>
+        </div>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-icon questions-icon"><i class="fas fa-book-open"></i></div>
+        <div>
+          <span class="stat-label">Quiz Questions</span>
+          <strong id="dashboardQuestionCount">—</strong>
+          <small>Available in question bank</small>
+        </div>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-icon reports-icon"><i class="fas fa-chart-line"></i></div>
+        <div>
+          <span class="stat-label">Quiz Attempts</span>
+          <strong>{{ reports|length }}</strong>
+          <small>Submitted quiz reports</small>
+        </div>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-icon admin-icon"><i class="fas fa-user-shield"></i></div>
+        <div>
+          <span class="stat-label">Administrators</span>
+          <strong>{{ users|selectattr('role', 'equalto', 'admin')|list|length }}</strong>
+          <small>Admin-level accounts</small>
+        </div>
+      </article>
+    </div>
+
+    <div class="dashboard-grid">
+      <section class="dashboard-card quick-links-card">
+        <div class="card-heading">
+          <div>
+            <span class="eyebrow">SHORTCUTS</span>
+            <h3>Quick Actions</h3>
+          </div>
+          <i class="fas fa-bolt"></i>
+        </div>
+
+        <div class="quick-links">
+          <button type="button" onclick="showSection('quizzesSection', document.querySelectorAll('.nav-button')[2])">
+            <span><i class="fas fa-circle-plus"></i></span>
+            <div><strong>Add New Question</strong><small>Create a quiz question</small></div>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          <button type="button" onclick="showSection('usersSection', document.querySelectorAll('.nav-button')[1])">
+            <span><i class="fas fa-user-gear"></i></span>
+            <div><strong>Manage Users</strong><small>Edit roles and accounts</small></div>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          <button type="button" onclick="showSection('questionsSection', document.querySelectorAll('.nav-button')[3])">
+            <span><i class="fas fa-list-check"></i></span>
+            <div><strong>Question Bank</strong><small>Review all questions</small></div>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          <button type="button" onclick="showSection('reportsSection', document.querySelectorAll('.nav-button')[4])">
+            <span><i class="fas fa-chart-column"></i></span>
+            <div><strong>View Reports</strong><small>Check attempts and scores</small></div>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </section>
+
+      <section class="dashboard-card activity-card">
+        <div class="card-heading">
+          <div>
+            <span class="eyebrow">LATEST DATA</span>
+            <h3>Recent Quiz Attempts</h3>
+          </div>
+          <button class="text-button" type="button" onclick="showSection('reportsSection', document.querySelectorAll('.nav-button')[4])">View all</button>
+        </div>
+
+        <div class="activity-list">
+          {% for report in reports[:5] %}
+          <div class="activity-item">
+            <div class="activity-avatar">{{ report.username[:1]|upper }}</div>
+            <div class="activity-info">
+              <strong>{{ report.username }}</strong>
+              <span>{{ report.course }} · Semester {{ report.semester }}</span>
+            </div>
+            <div class="activity-score">
+              <strong>{{ report.score }}</strong>
+              <span>{{ report.submitted_at }}</span>
+            </div>
+          </div>
+          {% else %}
+          <div class="empty-state">
+            <i class="fas fa-chart-simple"></i>
+            <p>No quiz attempts have been submitted yet.</p>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+    </div>
+
+    <section class="dashboard-card system-card">
+      <div class="system-status">
+        <span class="status-dot"></span>
+        <div><strong>System operational</strong><small>Quizzer admin services are available.</small></div>
+      </div>
+      <div class="system-meta">
+        <span><i class="fas fa-database"></i> Database connected</span>
+        <span><i class="fas fa-shield-halved"></i> Admin session active</span>
+      </div>
+    </section>
   </div>
 
  
@@ -80,8 +188,8 @@
           <td data-label="Email" class="email">{{ user.email }}</td>
           <td data-label="Role" class="role">{{ user.role }}</td>
           <td data-label="Actions">
-            <button onclick="openEditModal({{ user.id }})">✏️</button>
-            <button onclick="confirmDeleteUser({{ user.id }})">🗑️</button>
+            <button onclick="openEditModal({{ user.id }})"><i class="fas fa-pen"></i></button>
+            <button onclick="confirmDeleteUser({{ user.id }})"><i class="fas fa-trash"></i></button>
           </td>
         </tr>
         {% endfor %}
@@ -206,7 +314,7 @@
   <td data-label="Score">{{ report.score }}</td>
   <td data-label="Date">{{ report.submitted_at }}</td>
   <td data-label="Actions">
-    <button onclick="confirmDeleteReport({{ report.id }})">🗑️</button>
+    <button onclick="confirmDeleteReport({{ report.id }})"><i class="fas fa-trash"></i></button>
   </td>
 </tr>
 {% endfor %}
@@ -287,6 +395,23 @@
   };
 </script>
 
+
+<script>
+  document.getElementById('currentDate').textContent = new Intl.DateTimeFormat('en-US', {
+    weekday: 'short', month: 'short', day: 'numeric', year: 'numeric'
+  }).format(new Date());
+
+  const updateDashboardQuestionCount = () => {
+    const countElement = document.getElementById('dashboardQuestionCount');
+    const questionRows = document.querySelectorAll('#questionsTable tbody tr');
+    if (countElement && questionRows.length) countElement.textContent = questionRows.length;
+  };
+
+  const questionTableObserver = new MutationObserver(updateDashboardQuestionCount);
+  const questionTableBody = document.querySelector('#questionsTable tbody');
+  if (questionTableBody) questionTableObserver.observe(questionTableBody, { childList: true });
+  updateDashboardQuestionCount();
+</script>
 
 <script src="/static/js/admin_users.js">
 </script>

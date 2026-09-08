@@ -1,0 +1,84 @@
+/* ==========================================================================
+   Quizzer — shared design tokens
+   Included on every page alongside that page's own stylesheet.
+   ========================================================================== */
+:root {
+  --bg-1: #0b1017;
+  --bg-2: #121a26;
+  --surface: rgba(255, 255, 255, 0.05);
+  --surface-strong: #16202c;
+  --surface-border: rgba(255, 255, 255, 0.09);
+  --text-primary: #eef2f6;
+  --text-muted: #8b9baa;
+
+  --brand-amber: #f5a623;
+  --brand-coral: #ff6f61;
+  --accent-teal: #06b6d4;
+  --accent-teal-deep: #0f766e;
+  --danger: #e5484d;
+  --danger-deep: #b3261e;
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --shadow-soft: 0 6px 18px rgba(0, 0, 0, 0.22);
+
+  --font-display: 'Sora', 'Montserrat', sans-serif;
+  --font-body: 'Montserrat', sans-serif;
+}
+
+.qz-logo {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.35em;
+  letter-spacing: 0.2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(90deg, var(--brand-amber), var(--brand-coral));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-decoration: none;
+}
+
+.qz-btn-primary {
+  border: none;
+  background: linear-gradient(45deg, var(--accent-teal), var(--accent-teal-deep));
+  color: #fff;
+  font-weight: 700;
+  font-family: var(--font-display);
+  padding: 12px 22px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95em;
+  transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+  box-shadow: var(--shadow-soft);
+}
+.qz-btn-primary:hover { transform: translateY(-2px); opacity: 0.94; }
+
+.qz-btn-danger {
+  border: none;
+  background: linear-gradient(45deg, var(--danger), var(--danger-deep));
+  color: #fff;
+  font-weight: 700;
+  padding: 12px 20px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 6px 16px rgba(229, 72, 77, 0.25);
+}
+.qz-btn-danger:hover { transform: translateY(-2px); }
+
+.qz-panel {
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  backdrop-filter: blur(14px);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}

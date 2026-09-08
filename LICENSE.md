@@ -1,4 +1,4 @@
-# 🛡️ Proprietary License  
+# # Proprietary License  
 **Copyright © 2025  
 Dinesh Singh Dhami  
 All Rights Reserved**  
@@ -20,7 +20,7 @@ without **prior express written permission** from the owner.
 
 ---
 
-## 🔒 Restrictions  
+## # Restrictions  
 
 You are **NOT permitted** to:  
 
@@ -38,7 +38,7 @@ Any unauthorized usage will be considered a violation of intellectual property l
 
 ---
 
-## ⚖️ Legal Enforcement  
+## # Legal Enforcement  
 
 If any unauthorized use, copying, or distribution of **Quizzer** is detected, the owner reserves the right to:  
 
@@ -55,7 +55,7 @@ Violators may face penalties under applicable laws, including but not limited to
 
 ---
 
-## ⚖️ Ownership  
+## # Ownership  
 
 All rights, title, and interest in **Quizzer** remain solely with  
 **Dinesh Singh Dhami**.  
@@ -64,14 +64,14 @@ This license grants **zero rights** to end users.
 
 ---
 
-## 📜 Disclaimer  
+## # Disclaimer  
 
 This software is provided **“AS IS”**, without warranty of any kind.  
 The owner is not liable for any damages, losses, or issues arising from viewing or attempting to use the repository.  
 
 ---
 
-## ✉️ Permission Requests  
+## # Permission Requests  
 
 To request special permissions, contact:  
 
@@ -81,6 +81,6 @@ To request special permissions, contact:
 
 ---
 
-## 🚫 Unauthorized Use  
+## # Unauthorized Use  
 
 Unauthorized copying, use, or distribution of this software is strictly prohibited and may result in **legal action** under applicable copyright, intellectual-property, and cyber-security laws.  

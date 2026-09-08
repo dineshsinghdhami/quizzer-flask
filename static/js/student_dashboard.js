@@ -1,24 +1,41 @@
 
 const facultyPrograms = {
-    'Science & Technology': ['BE Computer', 'BCA', 'BE Civil'],
-    'Management': ['BBA', 'BBS']
+    'Science & Technology': {
+        badge: 'A',
+        blurb: '3 programs',
+        programs: ['BE Computer', 'BCA', 'BE Civil']
+    },
+    'Management': {
+        badge: 'B',
+        blurb: '2 programs',
+        programs: ['BBA', 'BBS']
+    }
 };
 
 const container = document.getElementById('facultyProgramsContainer');
 
 Object.keys(facultyPrograms).forEach(faculty => {
-    const section = document.createElement('div');
-    section.className = 'faculty-section';
-    const header = document.createElement('h4');
-    header.textContent = faculty;
-    section.appendChild(header);
+    const data = facultyPrograms[faculty];
 
-    const nestedDiv = document.createElement('div');
-    nestedDiv.className = 'nested-programs';
+    const card = document.createElement('div');
+    card.className = 'faculty-card';
 
-    facultyPrograms[faculty].forEach(program => {
+    const head = document.createElement('div');
+    head.className = 'faculty-card-head';
+    head.innerHTML = `<span class="option-badge">${data.badge}</span><h4>${faculty}</h4>`;
+    card.appendChild(head);
+
+    const sub = document.createElement('p');
+    sub.className = 'faculty-card-sub';
+    sub.textContent = data.blurb;
+    card.appendChild(sub);
+
+    const chipRow = document.createElement('div');
+    chipRow.className = 'program-chips';
+
+    data.programs.forEach(program => {
         const btn = document.createElement('button');
-        btn.className = 'btn';
+        btn.className = 'chip';
         btn.textContent = program;
 
         btn.addEventListener('click', () => {
@@ -26,15 +43,11 @@ Object.keys(facultyPrograms).forEach(faculty => {
             window.location.href = `/${slug}`;
         });
 
-        nestedDiv.appendChild(btn);
+        chipRow.appendChild(btn);
     });
 
-    header.addEventListener('click', () => {
-        nestedDiv.style.display = nestedDiv.style.display === 'flex' ? 'none' : 'flex';
-    });
-
-    section.appendChild(nestedDiv);
-    container.appendChild(section);
+    card.appendChild(chipRow);
+    container.appendChild(card);
 });
 
 const themeToggle = document.getElementById('themeToggle');
@@ -52,7 +65,13 @@ if (localStorage.getItem('theme') === 'dark') {
 themeToggle.addEventListener('click', () => {
     document.body.classList.toggle('dark');
     localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    const icon = themeToggle.querySelector('i');
+    icon.className = document.body.classList.contains('dark') ? 'fas fa-moon' : 'fas fa-sun';
 });
+(function initThemeIcon(){
+    const icon = themeToggle.querySelector('i');
+    icon.className = document.body.classList.contains('dark') ? 'fas fa-moon' : 'fas fa-sun';
+})();
 
 // ===== PROFILE CLICK =====
 document.getElementById('profileAvatar').addEventListener('click', ()=>{ window.location.href='userprofile'; });
@@ -103,22 +122,22 @@ const logoutBtn = document.getElementById('logoutBtn');
 const logoutModal = document.getElementById('logoutModal');
 const confirmLogout = document.getElementById('confirmLogout');
 const cancelLogout = document.getElementById('cancelLogout');
-logoutBtn.addEventListener('click', () => { 
-    logoutModal.style.display = 'flex'; 
+logoutBtn.addEventListener('click', () => {
+    logoutModal.style.display = 'flex';
 });
-confirmLogout.addEventListener('click', () => { 
+confirmLogout.addEventListener('click', () => {
     window.location.href = '/logout'; // call the logout route
 });
 
-cancelLogout.addEventListener('click', () => { 
-    logoutModal.style.display = 'none'; 
+cancelLogout.addEventListener('click', () => {
+    logoutModal.style.display = 'none';
 });
 
-const bellIcon = document.querySelector('.fa-bell');
+const bellBtn = document.getElementById('bellBtn');
 const notificationBox = document.getElementById('notificationBox');
-bellIcon.addEventListener('click', (e) => { 
-    e.stopPropagation(); 
-    notificationBox.classList.toggle('show'); 
+bellBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    notificationBox.classList.toggle('show');
 });
 document.addEventListener('click', () => { notificationBox.classList.remove('show'); });
 
@@ -127,8 +146,8 @@ document.addEventListener('keydown', (e) => {
         if(logoutModal.style.display === 'flex'){
             confirmLogout.click();
         } else {
-            const firstBtn = document.querySelector('.nested-programs .btn');
-            if(firstBtn) firstBtn.click();
+            const firstChip = document.querySelector('.program-chips .chip');
+            if(firstChip) firstChip.click();
         }
     }
 });

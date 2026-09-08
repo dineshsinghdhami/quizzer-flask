@@ -1,67 +1,52 @@
-:root {
-    --bg-login: linear-gradient(135deg, #121212, #1e1e1e);
-    --container-bg: #1e1e1e;
-    --input-bg: #2a2a2a;
-    --text-color: #f1f1f1;
-    --placeholder-color: #bbb;
-    --overlay-bg: linear-gradient(135deg, #00796b, #004d40);
-    --overlay-text: #fff;
-    --button-bg: linear-gradient(45deg, #00796b, #004d40);
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-body);
+}
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(160deg, var(--bg-1), var(--bg-2));
+    color: var(--text-primary);
+    position: relative;
+    padding: 20px 0;
 }
 
-* { 
-    box-sizing: border-box; 
-    margin: 0; 
-    padding: 0; 
-    font-family: 'Montserrat', sans-serif; 
-}
-body { 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    height: 100vh; 
-    background: var(--bg-login); 
-    color: var(--text-color); 
-    position: relative; 
-    overflow: hidden; 
-}
-
-.circle { 
-    position: absolute; 
-    border-radius: 50%; 
-    opacity: 0.15; 
-    animation: float 10s infinite ease-in-out alternate; 
-}
-.circle1 { 
-    width: 200px; 
-    height: 200px; 
-    top: -50px; 
-    left: -50px; 
-    background: #fff; 
-}
-.circle2 { 
-    width: 300px; 
-    height: 300px; 
-    bottom: -100px; 
-    right: -80px; 
-    background: #000; 
-    animation-duration: 12s; 
+.bg-pattern {
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.05) 1.4px, transparent 1.4px);
+    background-size: 26px 26px;
+    pointer-events: none;
 }
 
 .quiz-container {
-    background-color: var(--container-bg);
-    padding: 20px 40px;
-    border-radius: 15px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-    width: 400px;
+    background: var(--surface-strong);
+    border: 1px solid var(--surface-border);
+    padding: 30px 36px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    width: 420px;
+    max-width: 90%;
     text-align: center;
     z-index: 1;
     position: relative;
 }
 
-h1 { 
-    color: #00bcd4; 
-    margin-bottom: 20px; 
+.quiz-brand {
+    display: inline-block;
+    margin-bottom: 14px;
+    font-size: 1.1em;
+}
+
+h1 {
+    color: var(--text-primary);
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    margin-bottom: 20px;
 }
 
 #options {
@@ -70,61 +55,60 @@ h1 {
 }
 
 #options li {
-    background-color: #2a2a2a;
+    background: rgba(255,255,255,0.04);
+    border: 1.5px solid var(--surface-border);
     margin: 10px 0;
-    padding: 10px;
-    border-radius: 25px;
+    padding: 12px 16px;
+    border-radius: var(--radius-pill);
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.25s;
+    color: var(--text-primary);
+    font-size: 0.95rem;
 }
 
 #options li:hover {
-    background-color: #00796b;
+    background: var(--accent-teal);
+    border-color: var(--accent-teal);
     color: white;
 }
 
 #nextBtn {
     margin-top: 20px;
-    padding: 12px;
+    padding: 12px 26px;
     border: none;
-    border-radius: 25px;
-    background: var(--button-bg);
+    border-radius: var(--radius-pill);
+    background: linear-gradient(45deg, var(--accent-teal), var(--accent-teal-deep));
     color: #fff;
-    font-weight: bold;
-    font-size: 1rem;
+    font-weight: 700;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.25s;
 }
 
 #nextBtn:hover {
-    opacity: 0.9;
+    opacity: 0.92;
     transform: translateY(-2px);
+}
+
+#nextBtn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
 }
 
 #result {
     margin-top: 20px;
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 1.2rem;
+    font-weight: 700;
+    font-family: var(--font-display);
+    color: var(--text-primary);
 }
 
-@keyframes float { 
-    0%, 100% { 
-        transform: translateY(0px); 
-    } 50% { 
-        transform: translateY(-20px); 
-    } 
-}
-
-@media(max-width: 768px) 
-{
-    .quiz-container { 
-        width: 90%; 
-        padding: 20px; 
-        border-radius: 10px; 
-    }
-    .circle1, .circle2 { 
-        width: 120px; 
-        height: 120px; 
-        opacity: 0.08; 
+@media(max-width: 768px) {
+    .quiz-container {
+        width: 90%;
+        padding: 26px 22px;
+        border-radius: var(--radius-md);
     }
 }

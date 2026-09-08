@@ -7,52 +7,87 @@
 <meta http-equiv="Expires" content="0">
 <title>Quizzer App Dashboard</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="/static/css/student_dashboard.css">
 </head>
 <body>
 
-<div class="circle circle1"></div>
-<div class="circle circle2"></div>
-
 <div class="top-nav">
-  <div class="logo">Quizzer</div>
+  <div class="logo"><i class="fas fa-shapes"></i> Quizzer</div>
   <div class="nav-actions">
     <span class="welcome-text">Welcome, {{ session.first_name or session.username }}</span>
-    <i class="fas fa-bell"></i>
+    <button class="icon-btn" id="bellBtn" aria-label="Notifications">
+      <i class="fas fa-bell"></i>
+      <span class="icon-dot"></span>
+    </button>
     <div id="notificationBox" class="notification-box">
       <div class="notification-item"><div class="notification-text"><p>Welcome to Quizzer!</p><span>Just now</span></div></div>
       <div class="notification-item"><div class="notification-text"><p>Play quizzes daily!</p><span>Today</span></div></div>
     </div>
-    
-    <i class="fas fa-moon" id="themeToggle"></i>
+    <button class="icon-btn" id="themeToggle" aria-label="Toggle theme"><i class="fas fa-moon"></i></button>
     <img id="profileAvatar" src="{{ url_for('static', filename='uploads/' + session['profile_pic']) if session.get('profile_pic') else 'https://cdn-icons-png.flaticon.com/512/149/149071.png' }}" alt="User Icon" class="avatar">
   </div>
 </div>
 
 <div class="main-container">
 
-  <div class="card faculty-card-container">
-      <h2>Choose Your Faculty</h2>
-      <div id="facultyProgramsContainer"></div>
+  <section class="hero">
+    <div class="hero-pattern" aria-hidden="true"></div>
+    <div class="hero-content">
+      <span class="eyebrow">Dashboard</span>
+      <h1>Welcome back, {{ session.first_name or session.username }}</h1>
+      <p>Pick a faculty below or jump straight into a random set of questions.</p>
+      <button class="btn-primary" onclick="window.location.href='randomquiz'">
+        <i class="fas fa-shuffle"></i> Take Random Quiz
+      </button>
+    </div>
+  </section>
+
+  <div class="dashboard-grid">
+
+    <section class="panel faculty-panel">
+      <div class="panel-head">
+        <h2>Choose Your Faculty</h2>
+        <p>Select a program to start practicing questions.</p>
+      </div>
+      <div id="facultyProgramsContainer" class="faculty-grid"></div>
+    </section>
+
+    <aside class="sidebar">
+
+      <section class="panel">
+        <div class="panel-head-row">
+          <span class="badge-icon badge-icon--amber"><i class="fas fa-lightbulb"></i></span>
+          <h3>Tip of the Day</h3>
+        </div>
+        <p id="dailyTip" class="tip-text">Loading tip...</p>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head-row">
+          <span class="badge-icon badge-icon--teal"><i class="fas fa-bolt"></i></span>
+          <h3>Quick Links</h3>
+        </div>
+        <div class="quick-links">
+          <button class="link-row" onclick="window.location.href='randomquiz'">
+            <span><i class="fas fa-shuffle"></i> Take Random Quiz</span>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          <button class="link-row" onclick="window.location.href='userprofile'">
+            <span><i class="fas fa-user"></i> My Profile</span>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </section>
+
+      <button class="btn-logout" id="logoutBtn"><i class="fas fa-right-from-bracket"></i> Logout</button>
+
+    </aside>
   </div>
 
-  <div class="card">
-    <h2>Quick Links</h2>
-    <p>Explore useful features:</p>
-    <button class="btn"onclick="window.location.href='randomquiz'">Take Random Quiz</button>
-  </div>
-
-  <div class="card">
-    <h3>Tips of the Day</h3>
-    <p id="dailyTip">Loading tip...</p>
-  </div>
-
-  <div class="logout-container">
-    <button class="btn logout-btn" id="logoutBtn">Logout</button>
-  </div>
 </div>
 
 <!-- LOGOUT MODAL -->
@@ -60,8 +95,8 @@
   <div class="modal-content">
     <h3>Are you sure you want to logout?</h3>
     <div class="modal-btns">
-      <button id="confirmLogout" class="btn logout-btn">Yes, Logout</button>
-      <button id="cancelLogout" class="btn cancel-btn">Cancel</button>
+      <button id="confirmLogout" class="btn-logout">Yes, Logout</button>
+      <button id="cancelLogout" class="cancel-btn">Cancel</button>
     </div>
   </div>
 </div>
@@ -76,7 +111,6 @@
   </div>
 </footer>
 
-<script src="/static/js/student_dashboard.js">
-</script>
+<script src="/static/js/student_dashboard.js"></script>
 </body>
 </html>

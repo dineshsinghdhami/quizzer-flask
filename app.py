@@ -12,7 +12,7 @@ NEPAL_OFFSET = timedelta(hours=5, minutes=45)
 
 
 app = Flask(__name__)
-app.secret_key = '98989898'
+app.secret_key = '9866109958'
 
 # Set session lifetime
 app.permanent_session_lifetime = timedelta(days=30)
@@ -52,7 +52,7 @@ def allowed_file(filename):
 
 
 EMAIL_SENDER = "quizzer1pro@gmail.com"
-EMAIL_PASSWORD = ""  
+EMAIL_PASSWORD = "fnig qugk medh bxuy"
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 465
 
@@ -217,7 +217,7 @@ def resend_otp():
         return jsonify({"ok": True, "msg": f"OTP resent to {user_data['email']}"})
     except Exception as e:
         return jsonify({"ok": False, "msg": f"Failed to resend OTP: {e}"})
-    
+
 
 @app.route('/change_otp_email', methods=['POST'])
 def change_otp_email():
@@ -237,7 +237,7 @@ def change_otp_email():
         return jsonify({"ok": True, "msg": f"OTP sent to new email: {new_email}"})
     except Exception as e:
         return jsonify({"ok": False, "msg": f"Failed to send OTP to new email: {e}"})
-    
+
 
 @app.route('/login', methods=['GET','POST'])
 def login():
@@ -305,7 +305,7 @@ def verify_reset_otp():
     if 'reset_email' not in session:
         flash("Unauthorized access.", "error")
         return redirect(url_for('forgot_password'))
-    
+
     if request.method=='POST':
         entered_otp = request.form['otp'].strip()
         if entered_otp != session.get('reset_otp'):
@@ -313,7 +313,7 @@ def verify_reset_otp():
             return redirect(url_for('verify_reset_otp'))
         flash("OTP verified! Enter your new password.", "success")
         return redirect(url_for('reset_password'))
-    
+
     return render_template('verify_reset_otp.html')
 
 
@@ -326,7 +326,7 @@ def reset_password():
     if 'reset_email' not in session:
         flash("Unauthorized access.", "error")
         return redirect(url_for('forgot_password'))
-    
+
     if request.method=='POST':
         password = request.form.get('password')
         confirm_password = request.form.get('confirm_password')
@@ -343,7 +343,7 @@ def reset_password():
         session.pop('reset_otp',None)
         flash("Password changed successfully! Redirecting to login...", "success")
         return render_template('reset_password.html', redirect_login=True)
-    
+
     return render_template('reset_password.html', redirect_login=False)
 
 
@@ -385,7 +385,7 @@ def userprofile():
             file = request.files['profile_pic']
 
             if file.filename == '':
-                return jsonify({"ok": False, "error": "No file selected."}) 
+                return jsonify({"ok": False, "error": "No file selected."})
             if not file or not allowed_file(file.filename):
                 return jsonify({"ok": False, "error": "Invalid or missing file."})
 
@@ -425,7 +425,7 @@ def userprofile():
             user.password = generate_password_hash(password)
             db.session.commit()
             return jsonify({"ok": True})
-        
+
     profile_pic_url = (
         url_for('static', filename='uploads/' + user.profile_pic)
         if user.profile_pic else
@@ -438,8 +438,8 @@ def random_quiz():
     if 'loggedin' not in session:
         return redirect(url_for('login'))
 
-    course = "be computer"  
-    semesters = ['1', '2', '3', '4', '5', '6', '7', '8']  
+    course = "be computer"
+    semesters = ['1', '2', '3', '4', '5', '6', '7', '8']
     selected_questions = []
     for sem in semesters:
         questions = Question.query.filter_by(course=course, semester=sem)\
@@ -469,7 +469,7 @@ def quiz():
 
     if not all([faculty, course, semester, level]):
         return "Invalid quiz selection.", 400
-    
+
     questions = Question.query.filter(
         db.func.lower(Question.faculty) == faculty,
         db.func.lower(Question.course) == course,
@@ -485,15 +485,33 @@ def submit_quiz():
     if 'loggedin' not in session:
         return redirect(url_for('login'))
 
-    score = int(request.form.get('score', 0))
-    faculty = request.form.get('faculty', '').strip()
-    course = request.form.get('course', '').strip()
+    faculty = request.form.get('faculty', '').strip().lower()
+    course = request.form.get('course', '').strip().lower()
     semester = request.form.get('semester', '').strip()
 
-    # Current UTC time + Nepal offset
+    score = 0
+    total_questions = 0
+
+    for key, value in request.form.items():
+
+        if key.startswith('q'):
+
+            try:
+                question_id = int(key[1:])
+                selected_answer = int(value)
+            except ValueError:
+                continue
+
+            question = db.session.get(Question, question_id)
+
+            if question:
+                total_questions += 1
+
+                if selected_answer == question.correct_index:
+                    score += 1
+
     nepali_time = datetime.utcnow() + NEPAL_OFFSET
 
-    # Save report with additional info
     new_report = Report(
         user_id=session['id'],
         username=session['username'],
@@ -503,26 +521,35 @@ def submit_quiz():
         semester=semester,
         submitted_at=nepali_time
     )
+
     db.session.add(new_report)
     db.session.commit()
 
-    return render_template('result.html', score=score, username=session['username'], faculty=faculty, course=course, semester=semester)
+    return render_template(
+        'result.html',
+        score=score,
+        total_questions=total_questions,
+        username=session['username'],
+        faculty=faculty,
+        course=course,
+        semester=semester
+    )
 
 
 @app.route('/becomputer')
-def be_computer(): 
+def be_computer():
     return render_template('becomputer.html')
 @app.route('/bca')
 def bca():
     return render_template('bca.html')
 @app.route('/becivil')
-def be_civil(): 
+def be_civil():
     return render_template('becivil.html')
 @app.route('/bba')
 def bba():
     return render_template('bba.html')
 @app.route('/bbs')
-def bbs(): 
+def bbs():
     return render_template('bbs.html')
 
 
@@ -534,7 +561,7 @@ def admin():
         return render_template('admin_users.html', users=users, reports=reports)
     return redirect(url_for('login'))
 
-    
+
 @app.route('/admin/update_user', methods=['POST'])
 def update_user():
     if 'loggedin' not in session or session.get('role') != 'admin':
@@ -652,7 +679,7 @@ def delete_question(id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"ok": False, "error": str(e)})
-    
+
 @app.route('/add_question', methods=['GET', 'POST'])
 def add_question():
     if 'loggedin' not in session or session['role'] != 'admin':
@@ -672,7 +699,7 @@ def add_question():
             choice2 = data['choice2'].strip()
             choice3 = data['choice3'].strip()
             choice4 = data['choice4'].strip()
-            
+
             correct = data['correctAnswer'].strip().lower()
             correct_index = {"choice1":0, "choice2":1, "choice3":2, "choice4":3}.get(correct, 0)
 
@@ -721,7 +748,7 @@ def delete_report(report_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"ok": False, "error": str(e)}), 500
-    
+
 @app.route('/check_username')
 def check_username():
     username = request.args.get('username', '').strip()

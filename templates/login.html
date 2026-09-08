@@ -4,20 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quizzer - Login | Register</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
 <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
-<meta name="theme-color" content="#00bcd4">
-<link rel="stylesheet" href="/static/css/login.css"">
+<meta name="theme-color" content="#06b6d4">
+<link rel="stylesheet" href="/static/css/theme.css">
+<link rel="stylesheet" href="/static/css/login.css">
 
 </head>
 <body>
 
 <!-- Floating circles -->
-<div class="circle circle1"></div>
-<div class="circle circle2"></div>
+<div class="bg-pattern"></div>
+<a href="{{ url_for('home') }}" class="qz-logo brand-mark"><i class="fas fa-shapes"></i> Quizzer</a>
 
 
 {% with messages = get_flashed_messages(with_categories=true) %}

@@ -4,18 +4,20 @@
 <meta charset="UTF-8">
 <title>Verify OTP</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="/static/css/theme.css">
 <link rel="stylesheet" href="/static/css/verify_reset_otp.css">
 </head>
 <body>
 
-<div class="circle circle1"></div>
-<div class="circle circle2"></div>
+<div class="bg-pattern"></div>
 
 <div class="container" id="mainContainer">
+  <span class="qz-logo auth-logo"><i class="fas fa-shapes"></i> Quizzer</span>
   <h2>Verify OTP</h2>
+  <p class="auth-sub">Enter the code we sent to your email.</p>
 
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% for category, message in messages %}
@@ -25,10 +27,10 @@
 
   <form method="POST" id="otpForm">
     <input type="text" name="otp" placeholder="Enter OTP" required inputmode="numeric" pattern="[0-9]*">
-    <button type="submit">Verify OTP</button>
+    <button type="submit"><i class="fas fa-check"></i> Verify OTP</button>
   </form>
 
-  <button class="back-btn" id="backBtn">Back</button>
+  <button class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Back</button>
 </div>
 
 <script src="/static/js/verify_reset_otp.js">

@@ -1,44 +1,57 @@
-# Quizzer Hub
+# # Quizzer
 
 ![License](https://img.shields.io/badge/license-Proprietary-red)
 ![Python](https://img.shields.io/badge/Python-3.13%2B-blue)
+![Flask](https://img.shields.io/badge/Flask-Web%20Framework-white)
+![SQLite](https://img.shields.io/badge/Database-SQLite-blue)
 
-**Quizzer** is an interactive web-based quiz application built using **Flask** and **SQLite**, designed to let users take quizzes, view results, and interact with a clean, fast, simple UI.
+**Quizzer** is an interactive web-based quiz application developed as a **6th Semester Computer Engineering project**.
 
-⚠️ This project is **NOT open source**.  
-All code, files, and designs are fully protected and may not be copied or reused.
+The system is built using **Flask, SQLite, HTML, CSS, and JavaScript** and allows students to practice multiple-choice quizzes, view their scores, and track their quiz performance through a simple and responsive interface.
 
----
-
-## 🚀 Features
-
-- Secure user authentication  
-- Multiple-choice quiz system  
-- Automatic score calculation  
-- Local SQLite database  
-- Template-based HTML frontend  
-- Clean structure and easy internal maintenance  
-- Fully responsive design  
+> **Note:** This project is **not open source**. All code, files, and designs are proprietary and may not be copied, modified, or redistributed.
 
 ---
 
-## 🌐 Live Demo
+## # Features
 
-👉 https://quizzerhub.pythonanywhere.com/
+- User registration and login
+- Secure user authentication
+- Multiple-choice quiz system
+- Randomized questions and answer choices
+- Server-side quiz score calculation
+- Quiz result display
+- User performance reports
+- Semester and course-based quizzes
+- Admin dashboard
+- Add and manage quiz questions
+- Manage registered users
+- Password reset and OTP verification
+- Responsive desktop and mobile interface
+- SQLite database integration
 
 ---
 
-## 🧪 Tech Stack
+## # Live Demo
 
-- **Backend:** Flask (Python)  
-- **Frontend:** HTML + CSS  
-- **Database:** SQLite  
-- **Config:** Python-based settings (`config.py`)  
+https://quizzerhub.pythonanywhere.com/
 
 ---
 
-## 📁 Project Structure
-```
+## # Tech Stack
+
+- **Backend:** Python, Flask
+- **Frontend:** HTML, CSS, JavaScript
+- **Database:** SQLite
+- **Templating:** Jinja2
+- **Icons:** Font Awesome
+- **Deployment:** PythonAnywhere
+
+---
+
+## # Project Structure
+
+```text
 quizzer/
 ├── app.py
 ├── config.py
@@ -51,43 +64,84 @@ quizzer/
 
 ---
 
-## ⚙️ Configuration Overview
+## # Quiz Workflow
 
-Configuration values are managed in **`config.py`**, including:
-
-- Secret keys  
-- Database path  
-- Debug toggles  
-- Application-level constants  
-
----
-
-## 🔐 License (Proprietary — All Rights Reserved)
-
-This project is **100% proprietary**.  
-You are **not allowed** to:
-- Copy this code  
-- Modify or reuse any part  
-- Redistribute or publish it  
-- Use in personal or commercial projects  
-- Reverse-engineer or extract logic  
-- Upload anywhere online  
-
-For special permissions, contact the owner directly.
-
-Full legal text is included in the [LICENSE](LICENSE.md) file.
+```text
+User Login
+    ↓
+Select Faculty / Course / Semester
+    ↓
+Load Quiz Questions
+    ↓
+Answer Questions
+    ↓
+Submit Quiz
+    ↓
+Server Calculates Score
+    ↓
+Result Display
+    ↓
+Performance Report Saved
+```
 
 ---
 
-## 🤝 Contributions
+## # Academic Context
 
-Public contributions are **not accepted** since this is a private proprietary project.  
-For internal or collaborative access, contact the owner.
+This project was developed as part of the 6th Semester Computer Engineering coursework.
+
+The main objective of the project was to understand and implement:
+
+- Web application development using Flask
+- User authentication
+- Database integration
+- CRUD operations
+- Quiz management
+- Session handling
+- Frontend and backend communication
+- Basic deployment of a Flask web application
 
 ---
 
-## Author Information
+## # Configuration
 
-**Name:** [Dinesh Singh Dhami](https://dineshsinghdhami.com.np)  
-**GitHub:** [https://github.com/dineshsinghdhami](https://github.com/dineshsinghdhami)  
-**Email:** [dineshdhamidn@gmail.com](mailto:dineshdhamidn@gmail.com)
+Application configuration is managed through `config.py`, including:
+
+- Secret keys
+- Database configuration
+- Debug settings
+- Application constants
+
+---
+
+## # License
+
+This project is **proprietary** and **all rights are reserved**.
+
+You may **not**:
+
+- Copy or redistribute the source code
+- Modify or reuse any part of the project
+- Publish or mirror the project
+- Use it for personal or commercial purposes without permission
+- Reverse engineer or extract project logic
+
+See the [LICENSE](LICENSE.md) file for complete terms.
+
+---
+
+## # Contributions
+
+Public contributions are not currently accepted. 
+
+For collaboration, educational reference, or licensing inquiries, please contact the author.
+
+---
+
+## # Author
+
+**Dinesh Singh Dhami**
+
+- Website: https://dineshsinghdhami.com.np
+- GitHub: https://github.com/dineshsinghdhami
+- Email: dineshdhamidn@gmail.com

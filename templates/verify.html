@@ -4,14 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Verify OTP</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="/static/css/theme.css">
 <style>
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Montserrat', sans-serif;
+    font-family: var(--font-body);
 }
 
 html, body {
@@ -27,131 +29,144 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #0f0f0f, #1c1c1c);
+    background: linear-gradient(160deg, var(--bg-1), var(--bg-2));
     position: relative;
     padding: 20px 0;
     min-height: 100vh;
-    color: #f1f1f1;
+    color: var(--text-primary);
 }
 
-
-.circle {
-    position: absolute;
-    border-radius: 50%;
-    opacity: 0.05;
-    animation: float 10s infinite ease-in-out alternate;
+.bg-pattern {
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.05) 1.4px, transparent 1.4px);
+    background-size: 26px 26px;
     pointer-events: none;
+    z-index: 0;
 }
-.circle1 { 
-    width: 150px; 
-    height: 150px; 
-    top: -40px; 
-    left: -40px; 
-    background: #fff; 
-}
-.circle2 { 
-    width: 220px; 
-    height: 220px; 
-    bottom: -70px; 
-    right: -60px; 
-    background: #000; 
-    animation-duration: 12s; 
+.brand-mark {
+    margin-bottom: 18px;
+    font-size: 1.4em;
+    position: relative;
+    z-index: 1;
 }
 .container {
-    background: #1e1e1e;
-    padding: 25px 30px;
-    border-radius: 20px;
-    box-shadow: 0 15px 50px rgba(0,0,0,0.5);
+    background: var(--surface-strong);
+    border: 1px solid var(--surface-border);
+    padding: 30px 30px 25px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
     text-align: center;
-    width: 320px;
+    width: 340px;
     max-width: 90%;
-    animation: fadeInScale 0.6s ease;
+    animation: fadeInScale 0.5s ease;
+    position: relative;
+    z-index: 1;
 }
 .container h2 {
-    color: #00bcd4;
-    margin-bottom: 15px;
-    font-size: 1.6rem;
+    color: var(--text-primary);
+    font-family: var(--font-display);
+    margin-bottom: 6px;
+    font-size: 1.5rem;
+}
+.container .auth-sub {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 18px;
 }
 input {
     width: 100%;
-    padding: 12px 15px;
+    padding: 12px 18px;
     margin: 8px 0;
-    border-radius: 25px;
-    border: 2px solid #333;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--surface-border);
     font-size: 1rem;
-    background: #2a2a2a;
-    color: #f1f1f1;
-    transition: 0.3s;
+    background: rgba(255,255,255,0.04);
+    color: var(--text-primary);
+    transition: 0.25s;
+    text-align: center;
+    letter-spacing: 3px;
 }
+input::placeholder { letter-spacing: normal; color: var(--text-muted); }
 input:focus {
-    border-color: #00bcd4;
-    box-shadow: 0 0 6px rgba(0,188,212,0.3);
+    border-color: var(--accent-teal);
+    box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.15);
 }
 input.error-field {
-    border-color: red;
-    box-shadow: 0 0 5px red;
+    border-color: #ff8a8a;
+    box-shadow: 0 0 0 4px rgba(255,138,138,0.15);
 }
 button {
     width: 100%;
     padding: 12px;
     margin-top: 8px;
     border: none;
-    border-radius: 25px;
+    border-radius: var(--radius-pill);
     cursor: pointer;
-    font-weight: bold;
-    font-size: 1rem;
+    font-weight: 700;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
     color: #fff;
-    background: linear-gradient(45deg, #00bcd4, #00796b);
-    transition: transform 0.1s, opacity 0.3s;
+    background: linear-gradient(45deg, var(--accent-teal), var(--accent-teal-deep));
+    transition: transform 0.15s, opacity 0.25s;
 }
-button:hover { 
-    opacity: 0.9; 
-    transform: translateY(-2px); 
+button:hover {
+    opacity: 0.92;
+    transform: translateY(-2px);
 }
-button:active { 
-    transform: scale(0.97); 
+button:active {
+    transform: scale(0.97);
 }
-button:disabled { 
-    background: #555; 
-    cursor: not-allowed; 
+button:disabled {
+    background: #3a4552;
+    cursor: not-allowed;
 }
-button.go-back { 
-    background: #f44336; 
+button.go-back {
+    background: transparent;
+    border: 1.5px solid var(--surface-border);
+    color: var(--text-muted);
 }
+button.go-back:hover { background: var(--surface-border); color: var(--text-primary); }
+button#resendOtpBtn {
+    background: transparent;
+    border: 1.5px solid var(--surface-border);
+    color: var(--accent-teal);
+}
+button#resendOtpBtn:hover { background: var(--surface-border); }
 .flash {
     margin-bottom: 10px;
     padding: 8px 12px;
-    border-radius: 10px;
-    font-weight: bold;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
     text-align: center;
 }
-.flash.show { 
-    opacity: 1; 
+.flash.show {
+    opacity: 1;
 }
-.flash-success { 
-    background: #388e3c; 
-    color: #fff; 
+.flash-success {
+    background: #1f9d55;
+    color: #fff;
 }
-.flash-danger { 
-    background: #d32f2f; 
-    color: #fff; 
+.flash-danger {
+    background: #e5484d;
+    color: #fff;
 }
-.flash-info { 
-    background: #0288d1; 
-    color: #fff; 
+.flash-info {
+    background: var(--accent-teal-deep);
+    color: #fff;
 }
 .change-email {
-    margin-top: 10px;
+    margin-top: 12px;
     display: block;
-    font-size: 0.9rem;
-    color: #00bcd4;
+    font-size: 0.85rem;
+    color: var(--accent-teal);
     cursor: pointer;
     text-decoration: underline;
 }
-.change-email:hover { 
-    color: #4dd0e1; 
+.change-email:hover {
+    color: var(--brand-amber);
 }
 .modal {
     display: none;
@@ -159,31 +174,30 @@ button.go-back {
     z-index: 1000;
     left: 0; top: 0;
     width: 100%; height: 100%;
-    background: rgba(0,0,0,0.6);
+    background: rgba(5,10,15,0.65);
+    backdrop-filter: blur(4px);
     justify-content: center;
     align-items: center;
     overflow: auto;
 }
 .modal-content {
-    background: #1f1f1f;
-    padding: 20px 25px;
-    border-radius: 15px;
+    background: var(--surface-strong);
+    border: 1px solid var(--surface-border);
+    padding: 22px 25px;
+    border-radius: var(--radius-md);
     width: 90%;
     max-width: 360px;
     text-align: center;
-    animation: fadeInScale 0.5s ease;
+    animation: fadeInScale 0.4s ease;
     position: relative;
-    color: #f1f1f1;
+    color: var(--text-primary);
 }
-.modal-content h3 { margin-bottom: 12px; color: #00bcd4; }
+.modal-content h3 { margin-bottom: 14px; font-family: var(--font-display); color: var(--text-primary); }
 .modal-content input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #444;
-    margin-bottom: 12px;
-    background: #2a2a2a;
-    color: #f1f1f1;
+    letter-spacing: normal;
+    text-align: left;
+    border-radius: var(--radius-pill);
+    margin-bottom: 14px;
 }
 .modal-close {
     position: absolute;
@@ -191,41 +205,35 @@ button.go-back {
     right: 15px;
     font-size: 1.3rem;
     cursor: pointer;
-    color: #aaa;
+    color: var(--text-muted);
 }
-.modal-close:hover { 
-    color: #fff; 
-}
-@keyframes float {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-15px); }
+.modal-close:hover {
+    color: var(--text-primary);
 }
 @keyframes fadeInScale {
-    from { opacity: 0; transform: scale(0.9); }
+    from { opacity: 0; transform: scale(0.94); }
     to { opacity: 1; transform: scale(1); }
 }
 @media(max-width: 400px){
-    .container { padding: 20px; width: 90%; }
+    .container { padding: 24px 20px; width: 90%; }
     input, button { font-size: 0.95rem; padding: 12px; }
-}
-@media(max-width: 350px){
-    .container { padding: 18px; width: 85%; }
-    input, button { font-size: 0.9rem; padding: 10px; }
 }
 </style>
 </head>
 <body>
-<div class="circle circle1"></div>
-<div class="circle circle2"></div>
+<div class="bg-pattern"></div>
+
+<span class="qz-logo brand-mark"><i class="fas fa-shapes"></i> Quizzer</span>
 
 <div class="container">
     <h2>Enter OTP</h2>
+    <p class="auth-sub">Check your inbox for the verification code.</p>
     <div id="flash-container"></div>
     <form id="otpForm" action="{{ url_for('verify_otp') }}" method="POST">
         <input type="text" name="otp" placeholder="Enter OTP" id="otpInput" autocomplete="one-time-code" inputmode="numeric">
-        <button type="submit" id="verifyBtn">Verify OTP</button>
+        <button type="submit" id="verifyBtn"><i class="fas fa-check"></i> Verify OTP</button>
     </form>
-    <button type="button" id="goBackBtn" class="go-back">Go Back</button>
+    <button type="button" id="goBackBtn" class="go-back"><i class="fas fa-arrow-left"></i> Go Back</button>
     <button id="resendOtpBtn" type="button">Resend OTP</button>
     <span class="change-email" id="changeEmailBtn">Change Email</span>
 </div>

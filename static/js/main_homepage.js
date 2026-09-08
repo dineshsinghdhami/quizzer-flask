@@ -1,84 +1,59 @@
+document.addEventListener('DOMContentLoaded', function () {
 
-const hamburger = document.getElementById('hamburger');
-const navMenu = document.getElementById('nav-menu');
-hamburger.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
-});
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('nav-menu');
 
-const faqItems = document.querySelectorAll('.faq-item h3');
-faqItems.forEach(item => {
-    item.addEventListener('click', () => {
-        faqItems.forEach(i => { if(i !== item) i.parentElement.classList.remove('active'); });
-        item.parentElement.classList.toggle('active');
-    });
-});
+    if (hamburger && navMenu) {
 
- if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('{{ url_for("static", filename="sw.js") }}')
-    .then(reg => console.log('✅ Service Worker registered:', reg))
-    .catch(err => console.log('❌ Service Worker registration failed:', err));
-}
+        hamburger.addEventListener('click', function (event) {
+            event.stopPropagation();
 
-let deferredPrompt;
+            navMenu.classList.toggle('active');
 
-window.addEventListener('beforeinstallprompt', (e) => {
-    if (window.innerWidth > 768) return;
-    
-    e.preventDefault();
-    deferredPrompt = e;
+            if (navMenu.classList.contains('active')) {
+                hamburger.classList.remove('fa-bars');
+                hamburger.classList.add('fa-xmark');
+            } else {
+                hamburger.classList.remove('fa-xmark');
+                hamburger.classList.add('fa-bars');
+            }
+        });
 
-    const installBanner = document.createElement('div');
-    installBanner.id = 'installBanner';
-    installBanner.style.cssText = `
-        position: fixed;
-        top: -70px;
-        left: 0;
-        width: 100%;
-        background: #00bcd4;
-        color: #fff;
-        padding: 15px 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-weight: bold;
-        z-index: 9999;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        transition: top 0.5s ease;
-    `;
-    installBanner.innerHTML = `
-        <span>Install Quizzer App on your device</span>
-        <div>
-            <button id="installBtn" style="margin-right:10px;
-            padding:5px 12px;
-            border:none;
-            border-radius:5px;
-            background:#00796b;
-            color:#fff;
-            cursor:pointer;">Install</button>
-            <button id="closeInstall" style="padding:5px 10px;
-            border:none;
-            border-radius:5px;
-            background:#555;
-            color:#fff;
-            cursor:pointer;">X</button>
-        </div>
-    `;
-    document.body.appendChild(installBanner);
+        const navLinks = navMenu.querySelectorAll('a');
 
-    setTimeout(() => { installBanner.style.top = '0'; }, 100);
+        navLinks.forEach(function (link) {
+            link.addEventListener('click', function () {
+                navMenu.classList.remove('active');
 
-    const installBtn = document.getElementById('installBtn');
-    const closeBtn = document.getElementById('closeInstall');
+                hamburger.classList.remove('fa-xmark');
+                hamburger.classList.add('fa-bars');
+            });
+        });
 
-    installBtn.addEventListener('click', async () => {
-        installBanner.style.top = '-70px';
-        deferredPrompt.prompt();
-        const choiceResult = await deferredPrompt.userChoice;
-        console.log('User choice:', choiceResult.outcome);
-        deferredPrompt = null;
+        document.addEventListener('click', function (event) {
+            if (
+                !navMenu.contains(event.target) &&
+                !hamburger.contains(event.target)
+            ) {
+                navMenu.classList.remove('active');
+
+                hamburger.classList.remove('fa-xmark');
+                hamburger.classList.add('fa-bars');
+            }
+        });
+    }
+
+
+    const faqItems = document.querySelectorAll('.faq-item');
+
+    faqItems.forEach(function (item) {
+        const question = item.querySelector('h3');
+
+        if (question) {
+            question.addEventListener('click', function () {
+                item.classList.toggle('active');
+            });
+        }
     });
 
-    closeBtn.addEventListener('click', () => {
-        installBanner.style.top = '-70px';
-    });
 });

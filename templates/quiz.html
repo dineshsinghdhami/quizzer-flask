@@ -4,54 +4,96 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Quiz | Quizzer</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="/static/css/theme.css">
 <link rel="stylesheet" href="/static/css/quiz.css">
-
 </head>
+
 <body>
-  <div class="circle circle1"></div>
-  <div class="circle circle2"></div>
 
-  <div class="quiz-card">
-    <h1>Quiz Time!</h1>
+<div class="bg-pattern"></div>
 
-    <div id="noQuizMsg">No quiz available for this semester!</div>
-    <div class="status-bar">
-      <div>Time Left: <span id="timer">20</span> sec</div>
-      <div>Score: <span id="scoreDisplay">0</span></div>
+<div class="quiz-card">
+
+  <h1>Quiz Time!</h1>
+
+  <div id="noQuizMsg">
+    No quiz available for this semester!
+  </div>
+
+  <div class="status-bar">
+    <div>
+      Time Left: <span id="timer">20</span> sec
     </div>
-    <div class="progress-container">
-      <div id="progressBar" class="progress-bar"></div>
-    </div>
 
-    <form id="quizForm" method="POST" action="{{ url_for('submit_quiz') }}">
-      {% for q in questions %}
-      <div class="question" data-id="{{ q.id }}" data-correct-index="{{ q.correct_index }}">
-        <h2>{{ loop.index }}. {{ q.question }}</h2>
-        <div class="choices">
-          <label><input type="radio" name="q{{ q.id }}" value="0" required> {{ q.choice1 }}</label>
-          <label><input type="radio" name="q{{ q.id }}" value="1"> {{ q.choice2 }}</label>
-          <label><input type="radio" name="q{{ q.id }}" value="2"> {{ q.choice3 }}</label>
-          <label><input type="radio" name="q{{ q.id }}" value="3"> {{ q.choice4 }}</label>
-        </div>
-      </div>
-      {% endfor %}
-      <input type="hidden" name="score" id="score">
-      <input type="hidden" name="username" value="{{ username }}">
-      <input type="hidden" name="faculty" value="{{ faculty }}">
-      <input type="hidden" name="course" value="{{ course }}">
-      <input type="hidden" name="semester" value="{{ semester }}">
-      <input type="hidden" name="submitted_at" id="submittedAt">
-    </form>
-
-    <div id="submitBtnContainer">
-      <button type="button" id="submitBtn">Submit Quiz</button>
+    <div>
+      Question <span id="questionNumber">1</span> of {{ questions|length }}
     </div>
   </div>
 
-<script src="/static/js/quiz.js">
-</script>
+  <div class="progress-container">
+    <div id="progressBar" class="progress-bar"></div>
+  </div>
+
+  <form id="quizForm" method="POST" action="{{ url_for('submit_quiz') }}">
+
+    {% for q in questions %}
+
+    <div class="question" data-id="{{ q.id }}">
+
+      <h2>
+        <span class="question-display-number"></span>. {{ q.question }}
+      </h2>
+
+      <div class="choices">
+
+        <label>
+          <input type="radio" name="q{{ q.id }}" value="0" required>
+          {{ q.choice1 }}
+        </label>
+
+        <label>
+          <input type="radio" name="q{{ q.id }}" value="1">
+          {{ q.choice2 }}
+        </label>
+
+        <label>
+          <input type="radio" name="q{{ q.id }}" value="2">
+          {{ q.choice3 }}
+        </label>
+
+        <label>
+          <input type="radio" name="q{{ q.id }}" value="3">
+          {{ q.choice4 }}
+        </label>
+
+      </div>
+
+    </div>
+
+    {% endfor %}
+
+    <input type="hidden" name="username" value="{{ username }}">
+    <input type="hidden" name="faculty" value="{{ faculty }}">
+    <input type="hidden" name="course" value="{{ course }}">
+    <input type="hidden" name="semester" value="{{ semester }}">
+    <input type="hidden" name="submitted_at" id="submittedAt">
+
+  </form>
+
+  <div id="submitBtnContainer">
+    <button type="button" id="submitBtn">
+      <i class="fas fa-paper-plane"></i>
+      Submit Quiz
+    </button>
+  </div>
+
+</div>
+
+<script src="/static/js/quiz.js"></script>
+
 </body>
 </html>

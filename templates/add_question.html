@@ -4,21 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Add Question | Admin</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <link rel="stylesheet" href="/static/css/theme.css">
   <link rel="stylesheet" href="/static/css/add_question.css">
     
 </head>
 
 <body>
 
-  <!-- Floating circles -->
-  <div class="circle circle1"></div>
-  <div class="circle circle2"></div>
+  <div class="bg-pattern"></div>
 
   <main>
-    <h1>Add New Question</h1>
+    <span class="qz-logo aq-brand"><i class="fas fa-shapes"></i> Quizzer <span class="admin-pill">Admin</span></span>
+    <h1><i class="fas fa-circle-plus"></i> Add New Question</h1>
 
     <form id="questionForm" method="POST" action="/add_question">
       <div>
@@ -85,10 +85,10 @@
       </fieldset>
 
       <div class="flex justify-between pt-4">
-        <button type="button" onclick="window.location.href='admin'" class="btn btn-gray">Go Back</button>
+        <button type="button" onclick="window.location.href='admin'" class="btn btn-gray"><i class="fas fa-arrow-left"></i> Go Back</button>
         <div class="flex gap-4">
-          <button type="reset" class="btn btn-gray">Reset</button>
-          <button type="submit" class="btn btn-danger">Add Question</button>
+          <button type="reset" class="btn btn-gray"><i class="fas fa-rotate-left"></i> Reset</button>
+          <button type="submit" class="btn btn-danger"><i class="fas fa-check"></i> Add Question</button>
         </div>
       </div>
     </form>

@@ -4,21 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Random Quiz | Quizzer</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="/static/css/theme.css">
 <link rel="stylesheet" href="/static/css/randomquiz.css">
 </head>
 <body>
 
-<div class="circle circle1"></div>
-<div class="circle circle2"></div>
+<div class="bg-pattern"></div>
 
 <div class="quiz-container">
+    <span class="qz-logo quiz-brand"><i class="fas fa-shapes"></i> Quizzer</span>
     <h1>Random Quiz</h1>
     <div id="quiz">
         <div id="question"></div>
         <ul id="options"></ul>
     </div>
-    <button id="nextBtn">Next</button>
+    <button id="nextBtn">Next <i class="fas fa-arrow-right"></i></button>
     <div id="result"></div>
 </div>
 <script>
